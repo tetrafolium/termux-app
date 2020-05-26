@@ -1509,11 +1509,9 @@ public final class TerminalEmulator {
                 int numberOfTabs = getArg0(1);
                 int newCol = mLeftMargin;
                 for (int i = mCursorCol - 1; i >= 0; i--)
-                    if (mTabStop[i]) {
-                        if (--numberOfTabs == 0) {
-                            newCol = Math.max(i, mLeftMargin);
-                            break;
-                        }
+                    if ((mTabStop[i]) && (--numberOfTabs == 0)) {
+                        newCol = Math.max(i, mLeftMargin);
+                        break;
                     }
                 mCursorCol = newCol;
                 break;

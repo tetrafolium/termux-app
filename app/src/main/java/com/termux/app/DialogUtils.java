@@ -16,10 +16,10 @@ public final class DialogUtils {
         void onTextSet(String text);
     }
 
-    public static void textInput(Activity activity, int titleText, String initialText,
-                                 int positiveButtonText, final TextSetListener onPositive,
-                                 int neutralButtonText, final TextSetListener onNeutral,
-                                 int negativeButtonText, final TextSetListener onNegative,
+    public static void textInput(final Activity activity, final int titleText, final String initialText,
+                                 final int positiveButtonText, final TextSetListener onPositive,
+                                 final int neutralButtonText, final TextSetListener onNeutral,
+                                 final int negativeButtonText, final TextSetListener onNegative,
                                  final DialogInterface.OnDismissListener onDismiss) {
         final EditText input = new EditText(activity);
         input.setSingleLine();

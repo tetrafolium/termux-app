@@ -24,12 +24,12 @@ public final class TermuxViewClient implements TerminalViewClient {
     /** Keeping track of the special keys acting as Ctrl and Fn for the soft keyboard and other hardware keys. */
     boolean mVirtualControlKeyDown, mVirtualFnKeyDown;
 
-    public TermuxViewClient(TermuxActivity activity) {
+    public TermuxViewClient(final TermuxActivity activity) {
         this.mActivity = activity;
     }
 
     @Override
-    public float onScale(float scale) {
+    public float onScale(final float scale) {
         if (scale < 0.9f || scale > 1.1f) {
             boolean increase = scale > 1.f;
             mActivity.changeFontSize(increase);
@@ -39,7 +39,7 @@ public final class TermuxViewClient implements TerminalViewClient {
     }
 
     @Override
-    public void onSingleTapUp(MotionEvent e) {
+    public void onSingleTapUp(final MotionEvent e) {
         InputMethodManager mgr = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(mActivity.mTerminalView, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -50,13 +50,13 @@ public final class TermuxViewClient implements TerminalViewClient {
     }
 
     @Override
-    public void copyModeChanged(boolean copyMode) {
+    public void copyModeChanged(final boolean copyMode) {
         // Disable drawer while copying.
         mActivity.getDrawer().setDrawerLockMode(copyMode ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent e, TerminalSession currentSession) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent e, final TerminalSession currentSession) {
         if (handleVirtualKeys(keyCode, e, true)) return true;
 
         if (keyCode == KeyEvent.KEYCODE_ENTER && !currentSession.isRunning()) {
@@ -107,7 +107,7 @@ public final class TermuxViewClient implements TerminalViewClient {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent e) {
+    public boolean onKeyUp(final int keyCode, final KeyEvent e) {
         return handleVirtualKeys(keyCode, e, false);
     }
 
@@ -122,7 +122,7 @@ public final class TermuxViewClient implements TerminalViewClient {
     }
 
     @Override
-    public boolean onCodePoint(final int codePoint, boolean ctrlDown, TerminalSession session) {
+    public boolean onCodePoint(final int codePoint, final boolean ctrlDown, final TerminalSession session) {
         if (mVirtualFnKeyDown) {
             int resultingKeyCode = -1;
             int resultingCodePoint = -1;
@@ -257,12 +257,12 @@ public final class TermuxViewClient implements TerminalViewClient {
     }
 
     @Override
-    public boolean onLongPress(MotionEvent event) {
+    public boolean onLongPress(final MotionEvent event) {
         return false;
     }
 
     /** Handle dedicated volume buttons as virtual keys if applicable. */
-    private boolean handleVirtualKeys(int keyCode, KeyEvent event, boolean down) {
+    private boolean handleVirtualKeys(final int keyCode, final KeyEvent event, final boolean down) {
         InputDevice inputDevice = event.getDevice();
         if (inputDevice != null && inputDevice.getKeyboardType() == InputDevice.KEYBOARD_TYPE_ALPHABETIC) {
             // Do not steal dedicated buttons from a full external keyboard.

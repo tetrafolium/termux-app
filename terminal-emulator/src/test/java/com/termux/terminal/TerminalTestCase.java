@@ -13,31 +13,31 @@ import java.util.Set;
 
 public abstract class TerminalTestCase extends TestCase {
 
-	public static class MockTerminalOutput extends TerminalOutput {
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		public final List<ChangedTitle> titleChanges = new ArrayList<>();
-		public final List<String> clipboardPuts = new ArrayList<>();
-		public int bellsRung = 0;
+        public static class MockTerminalOutput extends TerminalOutput {
+                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                public final List<ChangedTitle> titleChanges = new ArrayList<>();
+                public final List<String> clipboardPuts = new ArrayList<>();
+                public int bellsRung = 0;
         public int colorsChanged = 0;
 
-		@Override
-		public void write(byte[] data, int offset, int count) {
-			baos.write(data, offset, count);
-		}
+                @Override
+                public void write(final byte[] data, final int offset, final int count) {
+                        baos.write(data, offset, count);
+                }
 
-		public String getOutputAndClear() {
+                public String getOutputAndClear() {
             String result = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             baos.reset();
             return result;
         }
 
 		@Override
-		public void titleChanged(String oldTitle, String newTitle) {
+		public void titleChanged(final String oldTitle, final String newTitle) {
 			titleChanges.add(new ChangedTitle(oldTitle, newTitle));
 		}
 
 		@Override
-		public void clipboardText(String text) {
+		public void clipboardText(final String text) {
 			clipboardPuts.add(text);
 		}
 
@@ -59,13 +59,13 @@ public abstract class TerminalTestCase extends TestCase {
 		final String oldTitle;
 		final String newTitle;
 
-		public ChangedTitle(String oldTitle, String newTitle) {
+		public ChangedTitle(final String oldTitle, final String newTitle) {
 			this.oldTitle = oldTitle;
 			this.newTitle = newTitle;
 		}
 
 		@Override
-		public boolean equals(Object o) {
+		public boolean equals(final Object o) {
 			if (!(o instanceof ChangedTitle)) return false;
 			ChangedTitle other = (ChangedTitle) o;
 			return Objects.equals(oldTitle, other.oldTitle) && Objects.equals(newTitle, other.newTitle);
@@ -83,14 +83,14 @@ public abstract class TerminalTestCase extends TestCase {
 
 	}
 
-	public TerminalTestCase enterString(String s) {
+	public TerminalTestCase enterString(final String s) {
 		byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
 		mTerminal.append(bytes, bytes.length);
 		assertInvariants();
 		return this;
 	}
 
-	public void assertEnteringStringGivesResponse(String input, String expectedResponse) {
+	public void assertEnteringStringGivesResponse(final String input, final String expectedResponse) {
 		enterString(input);
 		String response = mOutput.getOutputAndClear();
 		assertEquals(expectedResponse, response);
@@ -102,12 +102,12 @@ public abstract class TerminalTestCase extends TestCase {
 		mOutput = new MockTerminalOutput();
 	}
 
-	protected TerminalTestCase withTerminalSized(int columns, int rows) {
+	protected TerminalTestCase withTerminalSized(final int columns, final int rows) {
 		mTerminal = new TerminalEmulator(mOutput, columns, rows, rows * 2);
 		return this;
 	}
 
-	public void assertHistoryStartsWith(String... rows) {
+	public void assertHistoryStartsWith(final String... rows) {
 		assertTrue("About to check " + rows.length + " lines, but only " + mTerminal.getScreen().getActiveTranscriptRows() + " in history",
 				mTerminal.getScreen().getActiveTranscriptRows() >= rows.length);
 		for (int i = 0; i < rows.length; i++) {
@@ -118,7 +118,7 @@ public abstract class TerminalTestCase extends TestCase {
 	private static final class LineWrapper {
 		final TerminalRow mLine;
 
-		public LineWrapper(TerminalRow line) {
+		public LineWrapper(final TerminalRow line) {
 			mLine = line;
 		}
 
@@ -128,7 +128,7 @@ public abstract class TerminalTestCase extends TestCase {
 		}
 
 		@Override
-		public boolean equals(Object o) {
+		public boolean equals(final Object o) {
 			return o instanceof LineWrapper && ((LineWrapper) o).mLine == mLine;
 		}
 	}
@@ -172,7 +172,7 @@ public abstract class TerminalTestCase extends TestCase {
 		return this;
 	}
 
-	protected void assertLineIs(int line, String expected) {
+	protected void assertLineIs(final int line, final String expected) {
 		TerminalRow l = mTerminal.getScreen().allocateFullLineIfNecessary(mTerminal.getScreen().externalToInternalRow(line));
 		char[] chars = l.mText;
 		int textLen = l.getSpaceUsed();
@@ -184,7 +184,7 @@ public abstract class TerminalTestCase extends TestCase {
 		}
 	}
 
-	public TerminalTestCase assertLinesAre(String... lines) {
+	public TerminalTestCase assertLinesAre(final String... lines) {
 		assertEquals(lines.length, mTerminal.getScreen().mScreenRows);
 		for (int i = 0; i < lines.length; i++)
 			try {
@@ -195,19 +195,19 @@ public abstract class TerminalTestCase extends TestCase {
 		return this;
 	}
 
-	public TerminalTestCase resize(int cols, int rows) {
+	public TerminalTestCase resize(final int cols, final int rows) {
 		mTerminal.resize(cols, rows);
 		assertInvariants();
 		return this;
 	}
 
-	public TerminalTestCase assertLineWraps(boolean... lines) {
+	public TerminalTestCase assertLineWraps(final boolean... lines) {
 		for (int i = 0; i < lines.length; i++)
 			assertEquals("line=" + i, lines[i], mTerminal.getScreen().mLines[mTerminal.getScreen().externalToInternalRow(i)].mLineWrap);
 		return this;
 	}
 
-	protected TerminalTestCase assertLineStartsWith(int line, int... codePoints) {
+	protected TerminalTestCase assertLineStartsWith(final int line, final int... codePoints) {
 		char[] chars = mTerminal.getScreen().mLines[mTerminal.getScreen().externalToInternalRow(line)].mText;
 		int charIndex = 0;
 		for (int i = 0; i < codePoints.length; i++) {
@@ -220,14 +220,14 @@ public abstract class TerminalTestCase extends TestCase {
 		return this;
 	}
 
-	protected TerminalTestCase placeCursorAndAssert(int row, int col) {
+	protected TerminalTestCase placeCursorAndAssert(final int row, final int col) {
 		// +1 due to escape sequence being one based.
 		enterString("\033[" + (row + 1) + ";" + (col + 1) + "H");
 		assertCursorAt(row, col);
 		return this;
 	}
 
-	public TerminalTestCase assertCursorAt(int row, int col) {
+	public TerminalTestCase assertCursorAt(final int row, final int col) {
 		int actualRow = mTerminal.getCursorRow();
 		int actualCol = mTerminal.getCursorCol();
 		if (!(row == actualRow && col == actualCol))
@@ -236,23 +236,23 @@ public abstract class TerminalTestCase extends TestCase {
 	}
 
 	/** For testing only. Encoded style according to {@link TextStyle}. */
-	public long getStyleAt(int externalRow, int column) {
+	public long getStyleAt(final int externalRow, final int column) {
 		return mTerminal.getScreen().getStyleAt(externalRow, column);
 	}
 
 	public static class EffectLine {
 		final int[] styles;
 
-		public EffectLine(int[] styles) {
+		public EffectLine(final int[] styles) {
 			this.styles = styles;
 		}
 	}
 
-	protected EffectLine effectLine(int... bits) {
+	protected EffectLine effectLine(final int... bits) {
 		return new EffectLine(bits);
 	}
 
-	public TerminalTestCase assertEffectAttributesSet(EffectLine... lines) {
+	public TerminalTestCase assertEffectAttributesSet(final EffectLine... lines) {
 		assertEquals(lines.length, mTerminal.getScreen().mScreenRows);
 		for (int i = 0; i < lines.length; i++) {
 			int[] line = lines[i].styles;
@@ -266,7 +266,7 @@ public abstract class TerminalTestCase extends TestCase {
 		return this;
 	}
 
-	public TerminalTestCase assertForegroundIndices(EffectLine... lines) {
+	public TerminalTestCase assertForegroundIndices(final EffectLine... lines) {
 		assertEquals(lines.length, mTerminal.getScreen().mScreenRows);
 		for (int i = 0; i < lines.length; i++) {
 			int[] line = lines[i].styles;
@@ -280,7 +280,7 @@ public abstract class TerminalTestCase extends TestCase {
 		return this;
 	}
 
-	private static String describeStyle(int styleBits) {
+	private static String describeStyle(final int styleBits) {
 		return "'" + ((styleBits & TextStyle.CHARACTER_ATTRIBUTE_BLINK) != 0 ? ":BLINK:" : "")
 				+ ((styleBits & TextStyle.CHARACTER_ATTRIBUTE_BOLD) != 0 ? ":BOLD:" : "")
 				+ ((styleBits & TextStyle.CHARACTER_ATTRIBUTE_INVERSE) != 0 ? ":INVERSE:" : "")
@@ -291,12 +291,12 @@ public abstract class TerminalTestCase extends TestCase {
 				+ ((styleBits & TextStyle.CHARACTER_ATTRIBUTE_UNDERLINE) != 0 ? ":UNDERLINE:" : "") + "'";
 	}
 
-	public void assertForegroundColorAt(int externalRow, int column, int color) {
+	public void assertForegroundColorAt(final int externalRow, final int column, final int color) {
 		long style = mTerminal.getScreen().mLines[mTerminal.getScreen().externalToInternalRow(externalRow)].getStyle(column);
 		assertEquals(color, TextStyle.decodeForeColor(style));
 	}
 
-	public TerminalTestCase assertColor(int colorIndex, int expected) {
+	public TerminalTestCase assertColor(final int colorIndex, final int expected) {
 		int actual = mTerminal.mColors.mCurrentColors[colorIndex];
 		if (expected != actual) {
 			fail("Color index=" + colorIndex + ", expected=" + Integer.toHexString(expected) + ", was=" + Integer.toHexString(actual));

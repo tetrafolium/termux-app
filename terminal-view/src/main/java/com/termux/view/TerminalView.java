@@ -78,14 +78,14 @@ public final class TerminalView extends View {
 
     private boolean mAccessibilityEnabled;
 
-    public TerminalView(Context context, AttributeSet attributes) { // NO_UCD (unused code)
+    public TerminalView(final Context context, final AttributeSet attributes) { // NO_UCD (unused code)
         super(context, attributes);
         mGestureRecognizer = new GestureAndScaleRecognizer(context, new GestureAndScaleRecognizer.Listener() {
 
             boolean scrolledWithFinger;
 
             @Override
-            public boolean onUp(MotionEvent e) {
+            public boolean onUp(final MotionEvent e) {
                 mScrollRemainder = 0.0f;
                 if (mEmulator != null && mEmulator.isMouseTrackingActive() && !mIsSelectingText && !scrolledWithFinger) {
                     // Quick event processing when mouse tracking is active - do not wait for check of double tapping
@@ -99,7 +99,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean onSingleTapUp(MotionEvent e) {
+            public boolean onSingleTapUp(final MotionEvent e) {
                 if (mEmulator == null) return true;
                 if (mIsSelectingText) {
                     toggleSelectingText(null);
@@ -116,7 +116,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean onScroll(MotionEvent e, float distanceX, float distanceY) {
+            public boolean onScroll(final MotionEvent e, final float distanceX, final float distanceY) {
                 if (mEmulator == null || mIsSelectingText) return true;
                 if (mEmulator.isMouseTrackingActive() && e.isFromSource(InputDevice.SOURCE_MOUSE)) {
                     // If moving with mouse pointer while pressing button, report that instead of scroll.
@@ -135,7 +135,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean onScale(float focusX, float focusY, float scale) {
+            public boolean onScale(final float focusX, final float focusY, final float scale) {
                 if (mEmulator == null || mIsSelectingText) return true;
                 mScaleFactor *= scale;
                 mScaleFactor = mClient.onScale(mScaleFactor);
@@ -143,7 +143,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean onFling(final MotionEvent e2, float velocityX, float velocityY) {
+            public boolean onFling(final MotionEvent e2, final float velocityX, final float velocityY) {
                 if (mEmulator == null || mIsSelectingText) return true;
                 // Do not start scrolling until last fling has been taken care of:
                 if (!mScroller.isFinished()) return true;
@@ -179,18 +179,18 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean onDown(float x, float y) {
+            public boolean onDown(final float x, final float y) {
                 return false;
             }
 
             @Override
-            public boolean onDoubleTap(MotionEvent e) {
+            public boolean onDoubleTap(final MotionEvent e) {
                 // Do not treat is as a single confirmed tap - it may be followed by zoom.
                 return false;
             }
 
             @Override
-            public void onLongPress(MotionEvent e) {
+            public void onLongPress(final MotionEvent e) {
                 if (mGestureRecognizer.isInProgress()) return;
                 if (mClient.onLongPress(e)) return;
                 if (!mIsSelectingText) {
@@ -208,7 +208,7 @@ public final class TerminalView extends View {
      * @param onKeyListener Listener for all kinds of key events, both hardware and IME (which makes it different from that
      *                      available with {@link View#setOnKeyListener(OnKeyListener)}.
      */
-    public void setOnKeyListener(TerminalViewClient onKeyListener) {
+    public void setOnKeyListener(final TerminalViewClient onKeyListener) {
         this.mClient = onKeyListener;
     }
 
@@ -217,7 +217,7 @@ public final class TerminalView extends View {
      *
      * @param session The {@link TerminalSession} this view will be displaying.
      */
-    public boolean attachSession(TerminalSession session) {
+    public boolean attachSession(final TerminalSession session) {
         if (session == mTermSession) return false;
         mTopRow = 0;
 
@@ -234,7 +234,7 @@ public final class TerminalView extends View {
     }
 
     @Override
-    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+    public InputConnection onCreateInputConnection(final EditorInfo outAttrs) {
         // Using InputType.NULL is the most correct input type and avoids issues with other hacks.
         //
         // Previous keyboard issues:
@@ -261,7 +261,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean commitText(CharSequence text, int newCursorPosition) {
+            public boolean commitText(final CharSequence text, final int newCursorPosition) {
                 if (LOG_KEY_EVENTS) {
                     Log.i(EmulatorDebug.LOG_TAG, "IME: commitText(\"" + text + "\", " + newCursorPosition + ")");
                 }
@@ -276,7 +276,7 @@ public final class TerminalView extends View {
             }
 
             @Override
-            public boolean deleteSurroundingText(int leftLength, int rightLength) {
+            public boolean deleteSurroundingText(final int leftLength, final int rightLength) {
                 if (LOG_KEY_EVENTS) {
                     Log.i(EmulatorDebug.LOG_TAG, "IME: deleteSurroundingText(" + leftLength + ", " + rightLength + ")");
                 }
@@ -286,7 +286,7 @@ public final class TerminalView extends View {
                 return super.deleteSurroundingText(leftLength, rightLength);
             }
 
-            void sendTextToTerminal(CharSequence text) {
+            void sendTextToTerminal(final CharSequence text) {
                 final int textLengthInChars = text.length();
                 for (int i = 0; i < textLengthInChars; i++) {
                     char firstChar = text.charAt(i);
@@ -399,12 +399,12 @@ public final class TerminalView extends View {
      *
      * @param textSize the new font size, in density-independent pixels.
      */
-    public void setTextSize(int textSize) {
+    public void setTextSize(final int textSize) {
         mRenderer = new TerminalRenderer(textSize, mRenderer == null ? Typeface.MONOSPACE : mRenderer.mTypeface);
         updateSize();
     }
 
-    public void setTypeface(Typeface newTypeface) {
+    public void setTypeface(final Typeface newTypeface) {
         mRenderer = new TerminalRenderer(mRenderer.mTextSize, newTypeface);
         updateSize();
         invalidate();
@@ -421,7 +421,7 @@ public final class TerminalView extends View {
     }
 
     /** Send a single mouse event code to the terminal. */
-    void sendMouseEventCode(MotionEvent e, int button, boolean pressed) {
+    void sendMouseEventCode(final MotionEvent e, final int button, final boolean pressed) {
         int x = (int) (e.getX() / mRenderer.mFontWidth) + 1;
         int y = (int) ((e.getY() - mRenderer.mFontLineSpacingAndAscent) / mRenderer.mFontLineSpacing) + 1;
         if (pressed && (button == TerminalEmulator.MOUSE_WHEELDOWN_BUTTON || button == TerminalEmulator.MOUSE_WHEELUP_BUTTON)) {
@@ -438,7 +438,7 @@ public final class TerminalView extends View {
     }
 
     /** Perform a scroll, either from dragging the screen or by scrolling a mouse wheel. */
-    void doScroll(MotionEvent event, int rowsDown) {
+    void doScroll(final MotionEvent event, final int rowsDown) {
         boolean up = rowsDown < 0;
         int amount = Math.abs(rowsDown);
         for (int i = 0; i < amount; i++) {
@@ -457,7 +457,7 @@ public final class TerminalView extends View {
 
     /** Overriding {@link View#onGenericMotionEvent(MotionEvent)}. */
     @Override
-    public boolean onGenericMotionEvent(MotionEvent event) {
+    public boolean onGenericMotionEvent(final MotionEvent event) {
         if (mEmulator != null && event.isFromSource(InputDevice.SOURCE_MOUSE) && event.getAction() == MotionEvent.ACTION_SCROLL) {
             // Handle mouse wheel scrolling.
             boolean up = event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0.0f;
@@ -470,7 +470,7 @@ public final class TerminalView extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     @TargetApi(23)
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(final MotionEvent ev) {
         if (mEmulator == null) return true;
         final int action = ev.getAction();
 
@@ -557,7 +557,7 @@ public final class TerminalView extends View {
     }
 
     @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+    public boolean onKeyPreIme(final int keyCode, final KeyEvent event) {
         if (LOG_KEY_EVENTS)
             Log.i(EmulatorDebug.LOG_TAG, "onKeyPreIme(keyCode=" + keyCode + ", event=" + event + ")");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -578,7 +578,7 @@ public final class TerminalView extends View {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         if (LOG_KEY_EVENTS)
             Log.i(EmulatorDebug.LOG_TAG, "onKeyDown(keyCode=" + keyCode + ", isSystem()=" + event.isSystem() + ", event=" + event + ")");
         if (mEmulator == null) return true;
@@ -644,7 +644,7 @@ public final class TerminalView extends View {
         return true;
     }
 
-    void inputCodePoint(int codePoint, boolean controlDownFromEvent, boolean leftAltDownFromEvent) {
+    void inputCodePoint(final int codePoint, final boolean controlDownFromEvent, final boolean leftAltDownFromEvent) {
         if (LOG_KEY_EVENTS) {
             Log.i(EmulatorDebug.LOG_TAG, "inputCodePoint(codePoint=" + codePoint + ", controlDownFromEvent=" + controlDownFromEvent + ", leftAltDownFromEvent="
                 + leftAltDownFromEvent + ")");
@@ -703,7 +703,7 @@ public final class TerminalView extends View {
     }
 
     /** Input the specified keyCode if applicable and return if the input was consumed. */
-    public boolean handleKeyCode(int keyCode, int keyMod) {
+    public boolean handleKeyCode(final int keyCode, final int keyMod) {
         TerminalEmulator term = mTermSession.getEmulator();
         String code = KeyHandler.getCode(keyCode, keyMod, term.isCursorKeysApplicationMode(), term.isKeypadApplicationMode());
         if (code == null) return false;
@@ -719,7 +719,7 @@ public final class TerminalView extends View {
      * @return Whether the event was handled.
      */
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
         if (LOG_KEY_EVENTS)
             Log.i(EmulatorDebug.LOG_TAG, "onKeyUp(keyCode=" + keyCode + ", event=" + event + ")");
         if (mEmulator == null) return true;
@@ -740,7 +740,7 @@ public final class TerminalView extends View {
      * hierarchy, you're called with the old values of 0.
      */
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
         updateSize();
     }
 
@@ -765,7 +765,7 @@ public final class TerminalView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         if (mEmulator == null) {
             canvas.drawColor(0XFF000000);
         } else {
@@ -790,7 +790,7 @@ public final class TerminalView extends View {
 
     /** Toggle text selection mode in the view. */
     @TargetApi(23)
-    public void toggleSelectingText(MotionEvent ev) {
+    public void toggleSelectingText(final MotionEvent ev) {
         mIsSelectingText = !mIsSelectingText;
         mClient.copyModeChanged(mIsSelectingText);
 
@@ -827,7 +827,7 @@ public final class TerminalView extends View {
 
             final ActionMode.Callback callback = new ActionMode.Callback() {
                 @Override
-                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
                     int show = MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT;
 
                     ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -838,12 +838,12 @@ public final class TerminalView extends View {
                 }
 
                 @Override
-                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                public boolean onPrepareActionMode(final ActionMode mode, final Menu menu) {
                     return false;
                 }
 
                 @Override
-                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
                     if (!mIsSelectingText) {
                         // Fix issue where the dialog is pressed while being dismissed.
                         return true;
@@ -870,7 +870,7 @@ public final class TerminalView extends View {
                 }
 
                 @Override
-                public void onDestroyActionMode(ActionMode mode) {
+                public void onDestroyActionMode(final ActionMode mode) {
                 }
 
             };
@@ -878,27 +878,27 @@ public final class TerminalView extends View {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mActionMode = startActionMode(new ActionMode.Callback2() {
                     @Override
-                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
                         return callback.onCreateActionMode(mode, menu);
                     }
 
                     @Override
-                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    public boolean onPrepareActionMode(final ActionMode mode, final Menu menu) {
                         return false;
                     }
 
                     @Override
-                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
                         return callback.onActionItemClicked(mode, item);
                     }
 
                     @Override
-                    public void onDestroyActionMode(ActionMode mode) {
+                    public void onDestroyActionMode(final ActionMode mode) {
                         // Ignore.
                     }
 
                     @Override
-                    public void onGetContentRect(ActionMode mode, View view, Rect outRect) {
+                    public void onGetContentRect(final ActionMode mode, final View view, final Rect outRect) {
                         int x1 = Math.round(mSelX1 * mRenderer.mFontWidth);
                         int x2 = Math.round(mSelX2 * mRenderer.mFontWidth);
                         int y1 = Math.round((mSelY1 - mTopRow) * mRenderer.mFontLineSpacing);
@@ -924,7 +924,7 @@ public final class TerminalView extends View {
     }
 
     private CharSequence getText() {
-        return mEmulator.getScreen().getSelectedText(0, mTopRow, mEmulator.mColumns, mTopRow +mEmulator.mRows);
+        return mEmulator.getScreen().getSelectedText(0, mTopRow, mEmulator.mColumns, mTopRow + mEmulator.mRows);
     }
 
 }

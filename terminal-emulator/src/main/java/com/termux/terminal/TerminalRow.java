@@ -25,7 +25,7 @@ public final class TerminalRow {
     boolean mHasNonOneWidthOrSurrogateChars;
 
     /** Construct a blank row (containing only whitespace, ' ') with a specified style. */
-    public TerminalRow(int columns, long style) {
+    public TerminalRow(final int columns, final long style) {
         mColumns = columns;
         mText = new char[(int) (SPARE_CAPACITY_FACTOR * columns)];
         mStyle = new long[columns];
@@ -33,7 +33,7 @@ public final class TerminalRow {
     }
 
     /** NOTE: The sourceX2 is exclusive. */
-    public void copyInterval(TerminalRow line, int sourceX1, int sourceX2, int destinationX) {
+    public void copyInterval(final TerminalRow line, final int sourceX1, final int sourceX2, final int destinationX) {
         mHasNonOneWidthOrSurrogateChars |= line.mHasNonOneWidthOrSurrogateChars;
         final int x1 = line.findStartOfColumn(sourceX1);
         final int x2 = line.findStartOfColumn(sourceX2);
@@ -63,7 +63,7 @@ public final class TerminalRow {
     }
 
     /** Note that the column may end of second half of wide character. */
-    public int findStartOfColumn(int column) {
+    public int findStartOfColumn(final int column) {
         if (column == mColumns) return getSpaceUsed();
 
         int currentColumn = 0;
@@ -101,7 +101,7 @@ public final class TerminalRow {
         }
     }
 
-    private boolean wideDisplayCharacterStartingAt(int column) {
+    private boolean wideDisplayCharacterStartingAt(final int column) {
         for (int currentCharIndex = 0, currentColumn = 0; currentCharIndex < mSpaceUsed; ) {
             char c = mText[currentCharIndex++];
             int codePoint = Character.isHighSurrogate(c) ? Character.toCodePoint(c, mText[currentCharIndex++]) : c;
@@ -115,7 +115,7 @@ public final class TerminalRow {
         return false;
     }
 
-    public void clear(long style) {
+    public void clear(final long style) {
         Arrays.fill(mText, ' ');
         Arrays.fill(mStyle, style);
         mSpaceUsed = (short) mColumns;
@@ -123,7 +123,7 @@ public final class TerminalRow {
     }
 
     // https://github.com/steven676/Android-Terminal-Emulator/commit/9a47042620bec87617f0b4f5d50568535668fe26
-    public void setChar(int columnToSet, int codePoint, long style) {
+    public void setChar(final int columnToSet, final int codePoint, final long style) {
         mStyle[columnToSet] = style;
 
         final int newCodePointDisplayWidth = WcWidth.width(codePoint);
@@ -240,7 +240,7 @@ public final class TerminalRow {
         return true;
     }
 
-    public final long getStyle(int column) {
+    public final long getStyle(final int column) {
         return mStyle[column];
     }
 

@@ -134,7 +134,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
 
     private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, final Intent intent) {
             if (mIsVisible) {
                 String whatToReload = intent.getStringExtra(RELOAD_STYLE_ACTION);
                 if ("storage".equals(whatToReload)) {
@@ -202,7 +202,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
+    public void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
 
         mSettings = new TermuxPreferences(this);
@@ -230,13 +230,13 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             }
 
             @Override
-            public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            public boolean isViewFromObject(final @NonNull View view, final @NonNull Object object) {
                 return view == object;
             }
 
             @NonNull
             @Override
-            public Object instantiateItem(@NonNull ViewGroup collection, int position) {
+            public Object instantiateItem(final @NonNull ViewGroup collection, final int position) {
                 LayoutInflater inflater = LayoutInflater.from(TermuxActivity.this);
                 View layout;
                 if (position == 0) {
@@ -265,14 +265,14 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             }
 
             @Override
-            public void destroyItem(@NonNull ViewGroup collection, int position, @NonNull Object view) {
+            public void destroyItem(final @NonNull ViewGroup collection, final int position, final @NonNull Object view) {
                 collection.removeView((View) view);
             }
         });
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(final int position) {
                 if (position == 0) {
                     mTerminalView.requestFocus();
                 } else {
@@ -287,7 +287,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         newSessionButton.setOnLongClickListener(v -> {
             DialogUtils.textInput(TermuxActivity.this, R.string.session_new_named_title, null, R.string.session_new_named_positive_button,
                 text -> addNewSession(false, text), R.string.new_session_failsafe, text -> addNewSession(true, text)
-                , -1, null, null);
+, -1, null, null);
             return true;
         });
 
@@ -331,18 +331,18 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
      * callback method.
      */
     @Override
-    public void onServiceConnected(ComponentName componentName, IBinder service) {
+    public void onServiceConnected(final ComponentName componentName, final IBinder service) {
         mTermService = ((TermuxService.LocalBinder) service).service;
 
         mTermService.mSessionChangeCallback = new SessionChangedCallback() {
             @Override
-            public void onTextChanged(TerminalSession changedSession) {
+            public void onTextChanged(final TerminalSession changedSession) {
                 if (!mIsVisible) return;
                 if (getCurrentTermSession() == changedSession) mTerminalView.onScreenUpdated();
             }
 
             @Override
-            public void onTitleChanged(TerminalSession updatedSession) {
+            public void onTitleChanged(final TerminalSession updatedSession) {
                 if (!mIsVisible) return;
                 if (updatedSession != getCurrentTermSession()) {
                     // Only show toast for other sessions than the current one, since the user
@@ -386,14 +386,14 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             }
 
             @Override
-            public void onClipboardText(TerminalSession session, String text) {
+            public void onClipboardText(final TerminalSession session, final String text) {
                 if (!mIsVisible) return;
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setPrimaryClip(new ClipData(null, new String[]{"text/plain"}, new ClipData.Item(text)));
             }
 
             @Override
-            public void onBell(TerminalSession session) {
+            public void onBell(final TerminalSession session) {
                 if (!mIsVisible) return;
 
                 switch (mSettings.mBellBehaviour) {
@@ -411,7 +411,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             }
 
             @Override
-            public void onColorsChanged(TerminalSession changedSession) {
+            public void onColorsChanged(final TerminalSession changedSession) {
                 if (getCurrentTermSession() == changedSession) updateBackgroundColor();
             }
         };
@@ -423,7 +423,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
 
             @NonNull
             @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            public View getView(final int position, final View convertView, final @NonNull ViewGroup parent) {
                 View row = convertView;
                 if (row == null) {
                     LayoutInflater inflater = getLayoutInflater();
@@ -502,7 +502,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         }
     }
 
-    public void switchToSession(boolean forward) {
+    public void switchToSession(final boolean forward) {
         TerminalSession currentSession = getCurrentTermSession();
         int index = mTermService.getSessions().indexOf(currentSession);
         if (forward) {
@@ -522,7 +522,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     @Override
-    public void onServiceDisconnected(ComponentName name) {
+    public void onServiceDisconnected(final ComponentName name) {
         // Respect being stopped from the TermuxService notification action.
         finish();
     }
@@ -584,7 +584,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         return (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
-    void addNewSession(boolean failSafe, String sessionName) {
+    void addNewSession(final boolean failSafe, final String sessionName) {
         if (mTermService.getSessions().size() >= MAX_SESSIONS) {
             new AlertDialog.Builder(this).setTitle(R.string.max_terminals_reached_title).setMessage(R.string.max_terminals_reached_message)
                 .setPositiveButton(android.R.string.ok, null).show();
@@ -599,14 +599,14 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     /** Try switching to session and note about it, but do nothing if already displaying the session. */
-    void switchToSession(TerminalSession session) {
+    void switchToSession(final TerminalSession session) {
         if (mTerminalView.attachSession(session)) {
             noteSessionInfo();
             updateBackgroundColor();
         }
     }
 
-    String toToastTitle(TerminalSession session) {
+    String toToastTitle(final TerminalSession session) {
         final int indexOfSession = mTermService.getSessions().indexOf(session);
         StringBuilder toastTitle = new StringBuilder("[" + (indexOfSession + 1) + "]");
         if (!TextUtils.isEmpty(session.mSessionName)) {
@@ -633,7 +633,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
         TerminalSession currentSession = getCurrentTermSession();
         if (currentSession == null) return;
 
@@ -648,12 +648,12 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
 
     /** Hook system menu to show context menu instead. */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         mTerminalView.showContextMenu();
         return false;
     }
 
-    static LinkedHashSet<CharSequence> extractUrls(String text) {
+    static LinkedHashSet<CharSequence> extractUrls(final String text) {
 
         StringBuilder regex_sb = new StringBuilder();
 
@@ -777,7 +777,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(final MenuItem item) {
         TerminalSession session = getCurrentTermSession();
 
         switch (item.getItemId()) {
@@ -842,7 +842,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
                 startActivity(new Intent(this, TermuxHelpActivity.class));
                 return true;
             case CONTEXTMENU_TOGGLE_KEEP_SCREEN_ON: {
-                if(mTerminalView.getKeepScreenOn()) {
+                if (mTerminalView.getKeepScreenOn()) {
                     mTerminalView.setKeepScreenOn(false);
                     mSettings.setScreenAlwaysOn(this, false);
                 } else {
@@ -857,13 +857,13 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, final @NonNull String permissions[], final @NonNull int[] grantResults) {
         if (requestCode == REQUESTCODE_PERMISSION_STORAGE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             TermuxInstaller.setupStorageSymlinks(this);
         }
     }
 
-    void changeFontSize(boolean increase) {
+    void changeFontSize(final boolean increase) {
         mSettings.changeFontSize(this, increase);
         mTerminalView.setTextSize(mSettings.getFontSize());
     }
@@ -886,14 +886,14 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     }
 
     /** Show a toast and dismiss the last one if still visible. */
-    void showToast(String text, boolean longDuration) {
+    void showToast(final String text, final boolean longDuration) {
         if (mLastToast != null) mLastToast.cancel();
         mLastToast = Toast.makeText(TermuxActivity.this, text, longDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
         mLastToast.setGravity(Gravity.TOP, 0, 0);
         mLastToast.show();
     }
 
-    public void removeFinishedSession(TerminalSession finishedSession) {
+    public void removeFinishedSession(final TerminalSession finishedSession) {
         // Return pressed with finished session - remove it.
         TermuxService service = mTermService;
 

@@ -80,12 +80,12 @@ public class TermuxFileReceiverActivity extends Activity {
         }
     }
 
-    void showErrorDialogAndQuit(String message) {
+    void showErrorDialogAndQuit(final String message) {
         mFinishOnDismissNameDialog = false;
         new AlertDialog.Builder(this).setMessage(message).setOnDismissListener(dialog -> finish()).setPositiveButton(android.R.string.ok, (dialog, which) -> finish()).show();
     }
 
-    void handleContentUri(final Uri uri, String subjectFromIntent) {
+    void handleContentUri(final Uri uri, final String subjectFromIntent) {
         try {
             String attachmentFileName = null;
 
@@ -145,7 +145,7 @@ public class TermuxFileReceiverActivity extends Activity {
             });
     }
 
-    public File saveStreamWithName(InputStream in, String attachmentFileName) {
+    public File saveStreamWithName(final InputStream in, final String attachmentFileName) {
         File receiveDir = new File(TERMUX_RECEIVEDIR);
         if (!receiveDir.isDirectory() && !receiveDir.mkdirs()) {
             showErrorDialogAndQuit("Cannot create directory: " + receiveDir.getAbsolutePath());

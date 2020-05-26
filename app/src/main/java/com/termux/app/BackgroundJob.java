@@ -24,7 +24,7 @@ public final class BackgroundJob {
 
     final Process mProcess;
 
-    public BackgroundJob(String cwd, String fileToExecute, final String[] args, final TermuxService service) {
+    public BackgroundJob(final String cwd, final String fileToExecute, final String[] args, final TermuxService service) {
         String[] env = buildEnvironment(false, cwd);
         if (cwd == null) cwd = TermuxService.HOME_PATH;
 
@@ -93,14 +93,14 @@ public final class BackgroundJob {
         };
     }
 
-    private static void addToEnvIfPresent(List<String> environment, String name) {
+    private static void addToEnvIfPresent(final List<String> environment, final String name) {
         String value = System.getenv(name);
         if (value != null) {
             environment.add(name + "=" + value);
         }
     }
 
-    static String[] buildEnvironment(boolean failSafe, String cwd) {
+    static String[] buildEnvironment(final boolean failSafe, final String cwd) {
         new File(TermuxService.HOME_PATH).mkdirs();
 
         if (cwd == null) cwd = TermuxService.HOME_PATH;
@@ -149,7 +149,7 @@ public final class BackgroundJob {
         return true;
     }
 
-    public static int getPid(Process p) {
+    public static int getPid(final Process p) {
         try {
             Field f = p.getClass().getDeclaredField("pid");
             f.setAccessible(true);
@@ -163,7 +163,7 @@ public final class BackgroundJob {
         }
     }
 
-    static String[] setupProcessArgs(String fileToExecute, String[] args) {
+    static String[] setupProcessArgs(final String fileToExecute, final String[] args) {
         // The file to execute may either be:
         // - An elf file, in which we execute it directly.
         // - A script file without shebang, which we execute with our standard shell $PREFIX/bin/sh instead of the

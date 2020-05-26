@@ -9,18 +9,18 @@ import java.util.Random;
 /** "ESC ]" is the Operating System Command. */
 public class OperatingSystemControlTest extends TerminalTestCase {
 
-	public void testSetTitle() throws Exception {
-		List<ChangedTitle> expectedTitleChanges = new ArrayList<>();
+        public void testSetTitle() throws Exception {
+                List<ChangedTitle> expectedTitleChanges = new ArrayList<>();
 
-		withTerminalSized(10, 10);
-		enterString("\033]0;Hello, world\007");
-		assertEquals("Hello, world", mTerminal.getTitle());
-		expectedTitleChanges.add(new ChangedTitle(null, "Hello, world"));
-		assertEquals(expectedTitleChanges, mOutput.titleChanges);
+                withTerminalSized(10, 10);
+                enterString("\033]0;Hello, world\007");
+                assertEquals("Hello, world", mTerminal.getTitle());
+                expectedTitleChanges.add(new ChangedTitle(null, "Hello, world"));
+                assertEquals(expectedTitleChanges, mOutput.titleChanges);
 
-		enterString("\033]0;Goodbye, world\007");
-		assertEquals("Goodbye, world", mTerminal.getTitle());
-		expectedTitleChanges.add(new ChangedTitle("Hello, world", "Goodbye, world"));
+                enterString("\033]0;Goodbye, world\007");
+                assertEquals("Goodbye, world", mTerminal.getTitle());
+                expectedTitleChanges.add(new ChangedTitle("Hello, world", "Goodbye, world"));
 		assertEquals(expectedTitleChanges, mOutput.titleChanges);
 
 		enterString("\033]0;Goodbye, \u00F1 world\007");
@@ -100,7 +100,7 @@ public class OperatingSystemControlTest extends TerminalTestCase {
 		assertEquals(mTerminal.mColors.mCurrentColors[8], 0xFF0000FF);
 	}
 
-	void assertIndexColorsMatch(int[] expected) {
+	void assertIndexColorsMatch(final int[] expected) {
 		for (int i = 0; i < 255; i++)
 			assertEquals("index=" + i, expected[i], mTerminal.mColors.mCurrentColors[i]);
 	}

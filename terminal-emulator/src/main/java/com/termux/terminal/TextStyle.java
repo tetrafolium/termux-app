@@ -34,7 +34,7 @@ public final class TextStyle {
     /** If true (24-bit) color is used for the cell for foreground. */
     private final static int CHARACTER_ATTRIBUTE_TRUECOLOR_FOREGROUND = 1 << 9;
     /** If true (24-bit) color is used for the cell for foreground. */
-    private final static int CHARACTER_ATTRIBUTE_TRUECOLOR_BACKGROUND= 1 << 10;
+    private final static int CHARACTER_ATTRIBUTE_TRUECOLOR_BACKGROUND = 1 << 10;
 
     public final static int COLOR_INDEX_FOREGROUND = 256;
     public final static int COLOR_INDEX_BACKGROUND = 257;
@@ -46,7 +46,7 @@ public final class TextStyle {
     /** Normal foreground and background colors and no effects. */
     final static long NORMAL = encode(COLOR_INDEX_FOREGROUND, COLOR_INDEX_BACKGROUND, 0);
 
-    static long encode(int foreColor, int backColor, int effect) {
+    static long encode(final int foreColor, final int backColor, final int effect) {
         long result = effect & 0b111111111;
         if ((0xff000000 & foreColor) == 0xff000000) {
             // 24-bit color.
@@ -66,7 +66,7 @@ public final class TextStyle {
         return result;
     }
 
-    public static int decodeForeColor(long style) {
+    public static int decodeForeColor(final long style) {
         if ((style & CHARACTER_ATTRIBUTE_TRUECOLOR_FOREGROUND) == 0) {
             return (int) ((style >>> 40) & 0b111111111L);
         } else {
@@ -75,7 +75,7 @@ public final class TextStyle {
 
     }
 
-    public static int decodeBackColor(long style) {
+    public static int decodeBackColor(final long style) {
         if ((style & CHARACTER_ATTRIBUTE_TRUECOLOR_BACKGROUND) == 0) {
             return (int) ((style >>> 16) & 0b111111111L);
         } else {
@@ -83,7 +83,7 @@ public final class TextStyle {
         }
     }
 
-    public static int decodeEffect(long style) {
+    public static int decodeEffect(final long style) {
         return (int) (style & 0b11111111111);
     }
 

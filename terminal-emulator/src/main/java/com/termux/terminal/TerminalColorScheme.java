@@ -69,7 +69,7 @@ public final class TerminalColorScheme {
         System.arraycopy(DEFAULT_COLORSCHEME, 0, mDefaultColors, 0, TextStyle.NUM_INDEXED_COLORS);
     }
 
-    public void updateWith(Properties props) {
+    public void updateWith(final Properties props) {
         reset();
         for (Map.Entry<Object, Object> entries : props.entrySet()) {
             String key = (String) entries.getKey();

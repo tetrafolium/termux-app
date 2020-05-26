@@ -10,7 +10,7 @@ public class BellUtil {
     private static BellUtil instance = null;
     private static final Object lock = new Object();
 
-    public static BellUtil getInstance(Context context) {
+    public static BellUtil getInstance(final Context context) {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {

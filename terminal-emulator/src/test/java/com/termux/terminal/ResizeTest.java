@@ -2,18 +2,18 @@ package com.termux.terminal;
 
 public class ResizeTest extends TerminalTestCase {
 
-	public void testResizeWhenHasHistory() {
-		final int cols = 3;
-		withTerminalSized(cols, 3).enterString("111222333444555666777888999").assertCursorAt(2, 2).assertLinesAre("777", "888", "999");
-		resize(cols, 5).assertCursorAt(4, 2).assertLinesAre("555", "666", "777", "888", "999");
-		resize(cols, 3).assertCursorAt(2, 2).assertLinesAre("777", "888", "999");
-	}
+        public void testResizeWhenHasHistory() {
+                final int cols = 3;
+                withTerminalSized(cols, 3).enterString("111222333444555666777888999").assertCursorAt(2, 2).assertLinesAre("777", "888", "999");
+                resize(cols, 5).assertCursorAt(4, 2).assertLinesAre("555", "666", "777", "888", "999");
+                resize(cols, 3).assertCursorAt(2, 2).assertLinesAre("777", "888", "999");
+        }
 
-	public void testResizeWhenInAltBuffer() {
-		final int rows = 3, cols = 3;
-		withTerminalSized(cols, rows).enterString("a\r\ndef$").assertLinesAre("a  ", "def", "$  ").assertCursorAt(2, 1);
+        public void testResizeWhenInAltBuffer() {
+                final int rows = 3, cols = 3;
+                withTerminalSized(cols, rows).enterString("a\r\ndef$").assertLinesAre("a  ", "def", "$  ").assertCursorAt(2, 1);
 
-		// Resize and back again while in main buffer:
+                // Resize and back again while in main buffer:
 		resize(cols, 5).assertLinesAre("a  ", "def", "$  ", "   ", "   ").assertCursorAt(2, 1);
 		resize(cols, rows).assertLinesAre("a  ", "def", "$  ").assertCursorAt(2, 1);
 

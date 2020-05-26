@@ -32,7 +32,7 @@ final class TermuxPreferences {
 
     final static class KeyboardShortcut {
 
-        KeyboardShortcut(int codePoint, int shortcutAction) {
+        KeyboardShortcut(final int codePoint, final int shortcutAction) {
             this.codePoint = codePoint;
             this.shortcutAction = shortcutAction;
         }
@@ -74,11 +74,11 @@ final class TermuxPreferences {
     /**
      * If value is not in the range [min, max], set it to either min or max.
      */
-    static int clamp(int value, int min, int max) {
+    static int clamp(final int value, final int min, final int max) {
         return Math.min(Math.max(value, min), max);
     }
 
-    TermuxPreferences(Context context) {
+    TermuxPreferences(final Context context) {
         reloadFromProperties(context);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -104,7 +104,7 @@ final class TermuxPreferences {
         mFontSize = clamp(mFontSize, MIN_FONTSIZE, MAX_FONTSIZE); 
     }
 
-    boolean toggleShowExtraKeys(Context context) {
+    boolean toggleShowExtraKeys(final Context context) {
         mShowExtraKeys = !mShowExtraKeys;
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(SHOW_EXTRA_KEYS_KEY, mShowExtraKeys).apply();
         return mShowExtraKeys;
@@ -114,7 +114,7 @@ final class TermuxPreferences {
         return mFontSize;
     }
 
-    void changeFontSize(Context context, boolean increase) {
+    void changeFontSize(final Context context, final boolean increase) {
         mFontSize += (increase ? 1 : -1) * 2;
         mFontSize = Math.max(MIN_FONTSIZE, Math.min(mFontSize, MAX_FONTSIZE));
 
@@ -126,16 +126,16 @@ final class TermuxPreferences {
         return mScreenAlwaysOn;
     }
 
-    void setScreenAlwaysOn(Context context, boolean newValue) {
+    void setScreenAlwaysOn(final Context context, final boolean newValue) {
         mScreenAlwaysOn = newValue;
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(SCREEN_ALWAYS_ON_KEY, newValue).apply();
     }
 
-    static void storeCurrentSession(Context context, TerminalSession session) {
+    static void storeCurrentSession(final Context context, final TerminalSession session) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(TermuxPreferences.CURRENT_SESSION_KEY, session.mHandle).apply();
     }
 
-    static TerminalSession getCurrentSession(TermuxActivity context) {
+    static TerminalSession getCurrentSession(final TermuxActivity context) {
         String sessionHandle = PreferenceManager.getDefaultSharedPreferences(context).getString(TermuxPreferences.CURRENT_SESSION_KEY, "");
         for (int i = 0, len = context.mTermService.getSessions().size(); i < len; i++) {
             TerminalSession session = context.mTermService.getSessions().get(i);
@@ -144,7 +144,7 @@ final class TermuxPreferences {
         return null;
     }
     
-    void reloadFromProperties(Context context) {
+    void reloadFromProperties(final Context context) {
         File propsFile = new File(TermuxService.HOME_PATH + "/.termux/termux.properties");
         if (!propsFile.exists())
             propsFile = new File(TermuxService.HOME_PATH + "/.config/termux/termux.properties");
@@ -199,7 +199,7 @@ final class TermuxPreferences {
         parseAction("shortcut.rename-session", SHORTCUT_ACTION_RENAME_SESSION, props);
     }
 
-    private void parseAction(String name, int shortcutAction, Properties props) {
+    private void parseAction(final String name, final int shortcutAction, final Properties props) {
         String value = props.getProperty(name);
         if (value == null) return;
         String[] parts = value.toLowerCase().trim().split("\\+");

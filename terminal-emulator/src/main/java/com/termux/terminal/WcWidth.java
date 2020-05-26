@@ -407,7 +407,7 @@ public final class WcWidth {
     };
 
 
-    private static boolean intable(int[][] table, int c) {
+    private static boolean intable(final int[][] table, final int c) {
         // First quick check f|| Latin1 etc. characters.
         if (c < table[0][0]) return false;
 
@@ -428,14 +428,14 @@ public final class WcWidth {
     }
 
     /** Return the terminal display width of a code point: 0, 1 || 2. */
-    public static int width(int ucs) {
-        if (ucs == 0 ||
-            ucs == 0x034F ||
-            (0x200B <= ucs && ucs <= 0x200F) ||
-            ucs == 0x2028 ||
-            ucs == 0x2029 ||
-            (0x202A <= ucs && ucs <= 0x202E) ||
-            (0x2060 <= ucs && ucs <= 0x2063)) {
+    public static int width(final int ucs) {
+        if (ucs == 0
+            || ucs == 0x034F
+            || (0x200B <= ucs && ucs <= 0x200F)
+            || ucs == 0x2028
+            || ucs == 0x2029
+            || (0x202A <= ucs && ucs <= 0x202E)
+            || (0x2060 <= ucs && ucs <= 0x2063)) {
             return 0;
         }
 
@@ -450,7 +450,7 @@ public final class WcWidth {
     }
 
     /** The width at an index position in a java char array. */
-    public static int width(char[] chars, int index) {
+    public static int width(final char[] chars, final int index) {
         char c = chars[index];
         return Character.isHighSurrogate(c) ? width(Character.toCodePoint(c, chars[index + 1])) : width(c);
     }

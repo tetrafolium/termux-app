@@ -28,7 +28,7 @@ public final class TerminalBuffer {
      * @param screenRows the height of just the screen, not including the transcript that holds lines that have scrolled off
      *                   the top of the screen.
      */
-    public TerminalBuffer(int columns, int totalRows, int screenRows) {
+    public TerminalBuffer(final int columns, final int totalRows, final int screenRows) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
@@ -45,11 +45,11 @@ public final class TerminalBuffer {
         return getSelectedText(0, -getActiveTranscriptRows(), mColumns, mScreenRows, false).trim();
     }
 
-    public String getSelectedText(int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(final int selX1, final int selY1, final int selX2, final int selY2) {
         return getSelectedText(selX1, selY1, selX2, selY2, true);
     }
 
-    public String getSelectedText(int selX1, int selY1, int selX2, int selY2, boolean joinBackLines) {
+    public String getSelectedText(final int selX1, final int selY1, final int selX2, final int selY2, final boolean joinBackLines) {
         final StringBuilder builder = new StringBuilder();
         final int columns = mColumns;
 
@@ -122,22 +122,22 @@ public final class TerminalBuffer {
      * @param externalRow a row in the external coordinate system.
      * @return The row corresponding to the input argument in the private coordinate system.
      */
-    public int externalToInternalRow(int externalRow) {
+    public int externalToInternalRow(final int externalRow) {
         if (externalRow < -mActiveTranscriptRows || externalRow > mScreenRows)
             throw new IllegalArgumentException("extRow=" + externalRow + ", mScreenRows=" + mScreenRows + ", mActiveTranscriptRows=" + mActiveTranscriptRows);
         final int internalRow = mScreenFirstRow + externalRow;
         return (internalRow < 0) ? (mTotalRows + internalRow) : (internalRow % mTotalRows);
     }
 
-    public void setLineWrap(int row) {
+    public void setLineWrap(final int row) {
         mLines[externalToInternalRow(row)].mLineWrap = true;
     }
 
-    public boolean getLineWrap(int row) {
+    public boolean getLineWrap(final int row) {
         return mLines[externalToInternalRow(row)].mLineWrap;
     }
 
-    public void clearLineWrap(int row) {
+    public void clearLineWrap(final int row) {
         mLines[externalToInternalRow(row)].mLineWrap = false;
     }
 
@@ -149,7 +149,7 @@ public final class TerminalBuffer {
      * @param newRows    The number of rows the screen should have.
      * @param cursor     An int[2] containing the (column, row) cursor location.
      */
-    public void resize(int newColumns, int newRows, int newTotalRows, int[] cursor, long currentStyle, boolean altScreen) {
+    public void resize(final int newColumns, final int newRows, final int newTotalRows, final int[] cursor, final long currentStyle, final boolean altScreen) {
         // newRows > mTotalRows should not normally happen since mTotalRows is TRANSCRIPT_ROWS (10000):
         if (newColumns == mColumns && newRows <= mTotalRows) {
             // Fast resize where just the rows changed.
@@ -309,7 +309,7 @@ public final class TerminalBuffer {
      * @param srcInternal The first line to be copied.
      * @param len         The number of lines to be copied.
      */
-    private void blockCopyLinesDown(int srcInternal, int len) {
+    private void blockCopyLinesDown(final int srcInternal, final int len) {
         if (len == 0) return;
         int totalRows = mTotalRows;
 
@@ -330,7 +330,7 @@ public final class TerminalBuffer {
      * @param bottomMargin One line after the last line that is scrolled.
      * @param style        the style for the newly exposed line.
      */
-    public void scrollDownOneLine(int topMargin, int bottomMargin, long style) {
+    public void scrollDownOneLine(final int topMargin, final int bottomMargin, final long style) {
         if (topMargin > bottomMargin - 1 || topMargin < 0 || bottomMargin > mScreenRows)
             throw new IllegalArgumentException("topMargin=" + topMargin + ", bottomMargin=" + bottomMargin + ", mScreenRows=" + mScreenRows);
 
@@ -366,7 +366,7 @@ public final class TerminalBuffer {
      * @param dx destination X coordinate
      * @param dy destination Y coordinate
      */
-    public void blockCopy(int sx, int sy, int w, int h, int dx, int dy) {
+    public void blockCopy(final int sx, final int sy, final int w, final int h, final int dx, final int dy) {
         if (w == 0) return;
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows || dx < 0 || dx + w > mColumns || dy < 0 || dy + h > mScreenRows)
             throw new IllegalArgumentException();
@@ -383,7 +383,7 @@ public final class TerminalBuffer {
      * InvalidParemeterException will be thrown. Typically this is called with a "val" argument of 32 to clear a block
      * of characters.
      */
-    public void blockSet(int sx, int sy, int w, int h, int val, long style) {
+    public void blockSet(final int sx, final int sy, final int w, final int h, final int val, final long style) {
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows) {
             throw new IllegalArgumentException(
                 "Illegal arguments! blockSet(" + sx + ", " + sy + ", " + w + ", " + h + ", " + val + ", " + mColumns + ", " + mScreenRows + ")");
@@ -393,24 +393,24 @@ public final class TerminalBuffer {
                 setChar(sx + x, sy + y, val, style);
     }
 
-    public TerminalRow allocateFullLineIfNecessary(int row) {
+    public TerminalRow allocateFullLineIfNecessary(final int row) {
         return (mLines[row] == null) ? (mLines[row] = new TerminalRow(mColumns, 0)) : mLines[row];
     }
 
-    public void setChar(int column, int row, int codePoint, long style) {
+    public void setChar(final int column, final int row, final int codePoint, final long style) {
         if (row >= mScreenRows || column >= mColumns)
             throw new IllegalArgumentException("row=" + row + ", column=" + column + ", mScreenRows=" + mScreenRows + ", mColumns=" + mColumns);
         row = externalToInternalRow(row);
         allocateFullLineIfNecessary(row).setChar(column, codePoint, style);
     }
 
-    public long getStyleAt(int externalRow, int column) {
+    public long getStyleAt(final int externalRow, final int column) {
         return allocateFullLineIfNecessary(externalToInternalRow(externalRow)).getStyle(column);
     }
 
     /** Support for http://vt100.net/docs/vt510-rm/DECCARA and http://vt100.net/docs/vt510-rm/DECCARA */
-    public void setOrClearEffect(int bits, boolean setOrClear, boolean reverse, boolean rectangular, int leftMargin, int rightMargin, int top, int left,
-                                 int bottom, int right) {
+    public void setOrClearEffect(final int bits, final boolean setOrClear, final boolean reverse, final boolean rectangular, final int leftMargin, final int rightMargin, final int top, final int left,
+                                 final int bottom, final int right) {
         for (int y = top; y < bottom; y++) {
             TerminalRow line = mLines[externalToInternalRow(y)];
             int startOfLine = (rectangular || y == top) ? left : leftMargin;

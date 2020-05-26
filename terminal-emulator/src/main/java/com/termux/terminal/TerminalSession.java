@@ -46,7 +46,7 @@ public final class TerminalSession extends TerminalOutput {
 
     }
 
-    private static FileDescriptor wrapFileDescriptor(int fileDescriptor) {
+    private static FileDescriptor wrapFileDescriptor(final int fileDescriptor) {
         FileDescriptor result = new FileDescriptor();
         try {
             Field descriptorField;
@@ -108,7 +108,7 @@ public final class TerminalSession extends TerminalOutput {
         final byte[] mReceiveBuffer = new byte[4 * 1024];
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             if (msg.what == MSG_NEW_INPUT && isRunning()) {
                 int bytesRead = mProcessToTerminalIOQueue.read(mReceiveBuffer, false);
                 if (bytesRead > 0) {
@@ -142,7 +142,7 @@ public final class TerminalSession extends TerminalOutput {
     private final String[] mArgs;
     private final String[] mEnv;
 
-    public TerminalSession(String shellPath, String cwd, String[] args, String[] env, SessionChangedCallback changeCallback) {
+    public TerminalSession(final String shellPath, final String cwd, final String[] args, final String[] env, final SessionChangedCallback changeCallback) {
         mChangeCallback = changeCallback;
 
         this.mShellPath = shellPath;
@@ -152,7 +152,7 @@ public final class TerminalSession extends TerminalOutput {
     }
 
     /** Inform the attached pty of the new size and reflow or initialize the emulator. */
-    public void updateSize(int columns, int rows) {
+    public void updateSize(final int columns, final int rows) {
         if (mEmulator == null) {
             initializeEmulator(columns, rows);
         } else {
@@ -172,7 +172,7 @@ public final class TerminalSession extends TerminalOutput {
      * @param columns The number of columns in the terminal window.
      * @param rows    The number of rows in the terminal window.
      */
-    public void initializeEmulator(int columns, int rows) {
+    public void initializeEmulator(final int columns, final int rows) {
         mEmulator = new TerminalEmulator(this, columns, rows, /* transcript= */2000);
 
         int[] processId = new int[1];
@@ -226,12 +226,12 @@ public final class TerminalSession extends TerminalOutput {
 
     /** Write data to the shell process. */
     @Override
-    public void write(byte[] data, int offset, int count) {
+    public void write(final byte[] data, final int offset, final int count) {
         if (mShellPid > 0) mTerminalToProcessIOQueue.write(data, offset, count);
     }
 
     /** Write the Unicode code point to the terminal encoded in UTF-8. */
-    public void writeCodePoint(boolean prependEscape, int codePoint) {
+    public void writeCodePoint(final boolean prependEscape, final int codePoint) {
         if (codePoint > 1114111 || (codePoint >= 0xD800 && codePoint <= 0xDFFF)) {
             // 1114111 (= 2**16 + 1024**2 - 1) is the highest code point, [0xD800,0xDFFF] is the surrogate range.
             throw new IllegalArgumentException("Invalid code point: " + codePoint);
@@ -245,23 +245,23 @@ public final class TerminalSession extends TerminalOutput {
         } else if (codePoint <= /* 11 bits */0b11111111111) {
             /* 110xxxxx leading byte with leading 5 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11000000 | (codePoint >> 6));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         } else if (codePoint <= /* 16 bits */0b1111111111111111) {
-			/* 1110xxxx leading byte with leading 4 bits */
+                        /* 1110xxxx leading byte with leading 4 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11100000 | (codePoint >> 12));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 6) & 0b111111));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         } else { /* We have checked codePoint <= 1114111 above, so we have max 21 bits = 0b111111111111111111111 */
-			/* 11110xxx leading byte with leading 3 bits */
+                        /* 11110xxx leading byte with leading 3 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11110000 | (codePoint >> 18));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 12) & 0b111111));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 6) & 0b111111));
-			/* 10xxxxxx continuation byte with following 6 bits */
+                        /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         }
         write(mUtf8InputBuffer, 0, bufferPosition);
@@ -294,7 +294,7 @@ public final class TerminalSession extends TerminalOutput {
     }
 
     /** Cleanup resources when the process exits. */
-    void cleanupResources(int exitStatus) {
+    void cleanupResources(final int exitStatus) {
         synchronized (this) {
             mShellPid = -1;
             mShellExitStatus = exitStatus;
@@ -307,7 +307,7 @@ public final class TerminalSession extends TerminalOutput {
     }
 
     @Override
-    public void titleChanged(String oldTitle, String newTitle) {
+    public void titleChanged(final String oldTitle, final String newTitle) {
         mChangeCallback.onTitleChanged(this);
     }
 
@@ -321,7 +321,7 @@ public final class TerminalSession extends TerminalOutput {
     }
 
     @Override
-    public void clipboardText(String text) {
+    public void clipboardText(final String text) {
         mChangeCallback.onClipboardText(this, text);
     }
 

@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 public class TermuxOpenReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         final Uri data = intent.getData();
         if (data == null) {
             Log.e(EmulatorDebug.LOG_TAG, "termux-open: Called without intent data");
@@ -115,7 +115,7 @@ public class TermuxOpenReceiver extends BroadcastReceiver {
         }
 
         @Override
-        public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        public Cursor query(final @NonNull Uri uri, final String[] projection, final String selection, final String[] selectionArgs, final String sortOrder) {
             File file = new File(uri.getPath());
 
             if (projection == null) {
@@ -152,27 +152,27 @@ public class TermuxOpenReceiver extends BroadcastReceiver {
         }
 
         @Override
-        public String getType(@NonNull Uri uri) {
+        public String getType(final @NonNull Uri uri) {
             return null;
         }
 
         @Override
-        public Uri insert(@NonNull Uri uri, ContentValues values) {
+        public Uri insert(final @NonNull Uri uri, final ContentValues values) {
             return null;
         }
 
         @Override
-        public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+        public int delete(final @NonNull Uri uri, final String selection, final String[] selectionArgs) {
             return 0;
         }
 
         @Override
-        public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        public int update(final @NonNull Uri uri, final ContentValues values, final String selection, final String[] selectionArgs) {
             return 0;
         }
 
         @Override
-        public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
+        public ParcelFileDescriptor openFile(final @NonNull Uri uri, final @NonNull String mode) throws FileNotFoundException {
             File file = new File(uri.getPath());
             try {
                 String path = file.getCanonicalPath();

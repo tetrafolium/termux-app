@@ -7,18 +7,18 @@ import java.util.Random;
 
 public class TerminalRowTest extends TestCase {
 
-	/** The properties of these code points are validated in {@link #testStaticConstants()}. */
-	private static final int ONE_JAVA_CHAR_DISPLAY_WIDTH_TWO_1 = 0x679C;
-	private static final int ONE_JAVA_CHAR_DISPLAY_WIDTH_TWO_2 = 0x679D;
-	private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_TWO_1 = 0x2070E;
-	private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_TWO_2 = 0x20731;
+        /** The properties of these code points are validated in {@link #testStaticConstants()}. */
+        private static final int ONE_JAVA_CHAR_DISPLAY_WIDTH_TWO_1 = 0x679C;
+        private static final int ONE_JAVA_CHAR_DISPLAY_WIDTH_TWO_2 = 0x679D;
+        private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_TWO_1 = 0x2070E;
+        private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_TWO_2 = 0x20731;
 
-	/** Unicode Character 'MUSICAL SYMBOL G CLEF' (U+1D11E). Two java chars required for this. */
-	static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_ONE_1 = 0x1D11E;
-	/** Unicode Character 'MUSICAL SYMBOL G CLEF OTTAVA ALTA' (U+1D11F). Two java chars required for this. */
-	private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_ONE_2 = 0x1D11F;
+        /** Unicode Character 'MUSICAL SYMBOL G CLEF' (U+1D11E). Two java chars required for this. */
+        static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_ONE_1 = 0x1D11E;
+        /** Unicode Character 'MUSICAL SYMBOL G CLEF OTTAVA ALTA' (U+1D11F). Two java chars required for this. */
+        private static final int TWO_JAVA_CHARS_DISPLAY_WIDTH_ONE_2 = 0x1D11F;
 
-	private final int COLUMNS = 80;
+        private final int COLUMNS = 80;
 
 	/** A combining character. */
 	private static final int DIARESIS_CODEPOINT = 0x0308;
@@ -31,7 +31,7 @@ public class TerminalRowTest extends TestCase {
 		row = new TerminalRow(COLUMNS, TextStyle.NORMAL);
 	}
 
-	private void assertLineStartsWith(int... codePoints) {
+	private void assertLineStartsWith(final int... codePoints) {
 		char[] chars = row.mText;
 		int charIndex = 0;
 		for (int i = 0; i < codePoints.length; i++) {
@@ -43,7 +43,7 @@ public class TerminalRowTest extends TestCase {
 		}
 	}
 
-	private void assertColumnCharIndicesStartsWith(int... indices) {
+	private void assertColumnCharIndicesStartsWith(final int... indices) {
 		for (int i = 0; i < indices.length; i++) {
 			int expected = indices[i];
 			int actual = row.findStartOfColumn(i);

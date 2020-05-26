@@ -161,7 +161,7 @@ final class TermuxInstaller {
         }.start();
     }
 
-    private static void ensureDirectoryExists(File directory) {
+    private static void ensureDirectoryExists(final File directory) {
         if (!directory.isDirectory() && !directory.mkdirs()) {
             throw new RuntimeException("Unable to create directory: " + directory.getAbsolutePath());
         }
@@ -192,12 +192,12 @@ final class TermuxInstaller {
                 case "x86": return "i686";
             }
         }
-        throw new RuntimeException("Unable to determine arch from Build.SUPPORTED_ABIS =  " +
-            Arrays.toString(Build.SUPPORTED_ABIS));
+        throw new RuntimeException("Unable to determine arch from Build.SUPPORTED_ABIS =  "
+            + Arrays.toString(Build.SUPPORTED_ABIS));
     }
 
     /** Delete a folder and all its content or throw. Don't follow symlinks. */
-    static void deleteFolder(File fileOrDirectory) throws IOException {
+    static void deleteFolder(final File fileOrDirectory) throws IOException {
         if (fileOrDirectory.getCanonicalPath().equals(fileOrDirectory.getAbsolutePath()) && fileOrDirectory.isDirectory()) {
             File[] children = fileOrDirectory.listFiles();
 

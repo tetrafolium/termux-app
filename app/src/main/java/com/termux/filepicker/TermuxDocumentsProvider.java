@@ -63,7 +63,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
     };
 
     @Override
-    public Cursor queryRoots(String[] projection) throws FileNotFoundException {
+    public Cursor queryRoots(final String[] projection) throws FileNotFoundException {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_ROOT_PROJECTION);
         @SuppressWarnings("ConstantConditions") final String applicationName = getContext().getString(R.string.application_name);
 
@@ -80,14 +80,14 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
     }
 
     @Override
-    public Cursor queryDocument(String documentId, String[] projection) throws FileNotFoundException {
+    public Cursor queryDocument(final String documentId, final String[] projection) throws FileNotFoundException {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_DOCUMENT_PROJECTION);
         includeFile(result, documentId, null);
         return result;
     }
 
     @Override
-    public Cursor queryChildDocuments(String parentDocumentId, String[] projection, String sortOrder) throws FileNotFoundException {
+    public Cursor queryChildDocuments(final String parentDocumentId, final String[] projection, final String sortOrder) throws FileNotFoundException {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_DOCUMENT_PROJECTION);
         final File parent = getFileForDocId(parentDocumentId);
         for (File file : parent.listFiles()) {
@@ -99,14 +99,14 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
     }
 
     @Override
-    public ParcelFileDescriptor openDocument(final String documentId, String mode, CancellationSignal signal) throws FileNotFoundException {
+    public ParcelFileDescriptor openDocument(final String documentId, final String mode, final CancellationSignal signal) throws FileNotFoundException {
         final File file = getFileForDocId(documentId);
         final int accessMode = ParcelFileDescriptor.parseMode(mode);
         return ParcelFileDescriptor.open(file, accessMode);
     }
 
     @Override
-    public AssetFileDescriptor openDocumentThumbnail(String documentId, Point sizeHint, CancellationSignal signal) throws FileNotFoundException {
+    public AssetFileDescriptor openDocumentThumbnail(final String documentId, final Point sizeHint, final CancellationSignal signal) throws FileNotFoundException {
         final File file = getFileForDocId(documentId);
         final ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
         return new AssetFileDescriptor(pfd, 0, file.length());
@@ -118,7 +118,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
     }
 
     @Override
-    public void deleteDocument(String documentId) throws FileNotFoundException {
+    public void deleteDocument(final String documentId) throws FileNotFoundException {
         File file = getFileForDocId(documentId);
         if (!file.delete()) {
             throw new FileNotFoundException("Failed to delete document with id " + documentId);
@@ -126,13 +126,13 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
     }
 
     @Override
-    public String getDocumentType(String documentId) throws FileNotFoundException {
+    public String getDocumentType(final String documentId) throws FileNotFoundException {
         File file = getFileForDocId(documentId);
         return getMimeType(file);
     }
 
     @Override
-    public Cursor querySearchDocuments(String rootId, String query, String[] projection) throws FileNotFoundException {
+    public Cursor querySearchDocuments(final String rootId, final String query, final String[] projection) throws FileNotFoundException {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_DOCUMENT_PROJECTION);
         final File parent = getFileForDocId(rootId);
 
@@ -175,20 +175,20 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
      * <p/>
      * The reverse of @{link #getFileForDocId}.
      */
-    private static String getDocIdForFile(File file) {
+    private static String getDocIdForFile(final File file) {
         return file.getAbsolutePath();
     }
 
     /**
      * Get the file given a document id (the reverse of {@link #getDocIdForFile(File)}).
      */
-    private static File getFileForDocId(String docId) throws FileNotFoundException {
+    private static File getFileForDocId(final String docId) throws FileNotFoundException {
         final File f = new File(docId);
         if (!f.exists()) throw new FileNotFoundException(f.getAbsolutePath() + " not found");
         return f;
     }
 
-    private static String getMimeType(File file) {
+    private static String getMimeType(final File file) {
         if (file.isDirectory()) {
             return Document.MIME_TYPE_DIR;
         } else {
@@ -210,7 +210,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
      * @param docId  the document ID representing the desired file (may be null if given file)
      * @param file   the File object representing the desired file (may be null if given docID)
      */
-    private void includeFile(MatrixCursor result, String docId, File file)
+    private void includeFile(final MatrixCursor result, final String docId, final File file)
         throws FileNotFoundException {
         if (docId == null) {
             docId = getDocIdForFile(file);

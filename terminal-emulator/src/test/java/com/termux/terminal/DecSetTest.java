@@ -15,17 +15,17 @@ package com.termux.terminal;
  */
 public class DecSetTest extends TerminalTestCase {
 
-	/** DECSET 25, DECTCEM, controls visibility of the cursor. */
-	public void testShowHideCursor() {
-		withTerminalSized(3, 3);
-		assertTrue("Initially the cursor should be visible", mTerminal.isShowingCursor());
-		enterString("\033[?25l"); // Hide Cursor (DECTCEM).
-		assertFalse(mTerminal.isShowingCursor());
-		enterString("\033[?25h"); // Show Cursor (DECTCEM).
-		assertTrue(mTerminal.isShowingCursor());
+        /** DECSET 25, DECTCEM, controls visibility of the cursor. */
+        public void testShowHideCursor() {
+                withTerminalSized(3, 3);
+                assertTrue("Initially the cursor should be visible", mTerminal.isShowingCursor());
+                enterString("\033[?25l"); // Hide Cursor (DECTCEM).
+                assertFalse(mTerminal.isShowingCursor());
+                enterString("\033[?25h"); // Show Cursor (DECTCEM).
+                assertTrue(mTerminal.isShowingCursor());
 
-		enterString("\033[?25l"); // Hide Cursor (DECTCEM), again.
-		assertFalse(mTerminal.isShowingCursor());
+                enterString("\033[?25l"); // Hide Cursor (DECTCEM), again.
+                assertFalse(mTerminal.isShowingCursor());
 		mTerminal.reset();
 		assertTrue("Resetting the terminal should show the cursor", mTerminal.isShowingCursor());
 

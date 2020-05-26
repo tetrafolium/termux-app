@@ -37,7 +37,7 @@ public final class ExtraKeysView extends GridLayout {
     private static final int INTERESTING_COLOR = 0xFF80DEEA;
     private static final int BUTTON_PRESSED_COLOR = 0x7FFFFFFF;
 
-    public ExtraKeysView(Context context, AttributeSet attrs) {
+    public ExtraKeysView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
     
@@ -45,16 +45,16 @@ public final class ExtraKeysView extends GridLayout {
      * HashMap that implements Python dict.get(key, default) function.
      * Default java.util .get(key) is then the same as .get(key, null);
      */
-    static class CleverMap<K,V> extends HashMap<K,V> {
-        V get(K key, V defaultValue) {
-            if(containsKey(key))
+    static class CleverMap<K, V> extends HashMap<K, V> {
+        V get(final K key, final V defaultValue) {
+            if (containsKey(key))
                 return get(key);
             else
                 return defaultValue;
         }
     }
     
-    static class CharDisplayMap extends CleverMap<String, String> {}
+    static class CharDisplayMap extends CleverMap<String, String> { }
     
     /**
      * Keys are displayed in a natural looking way, like "→" for "RIGHT"
@@ -88,7 +88,7 @@ public final class ExtraKeysView extends GridLayout {
         put("F12", KeyEvent.KEYCODE_F12);
     }};
     
-    static void sendKey(View view, String keyName) {
+    static void sendKey(final View view, final String keyName) {
         TerminalView terminalView = view.findViewById(R.id.terminal_view);
         if (keyCodesForString.containsKey(keyName)) {
             int keyCode = keyCodesForString.get(keyName);
@@ -121,12 +121,12 @@ public final class ExtraKeysView extends GridLayout {
     private PopupWindow popupWindow;
     private int longPressCount;
     
-    public boolean readSpecialButton(SpecialButton name) {
+    public boolean readSpecialButton(final SpecialButton name) {
         SpecialButtonState state = specialButtons.get(name);
         if (state == null)
             throw new RuntimeException("Must be a valid special button (see source)");
         
-        if (! state.isOn)
+        if (!state.isOn)
             return false;
 
         if (state.button == null) {
@@ -136,7 +136,7 @@ public final class ExtraKeysView extends GridLayout {
         if (state.button.isPressed())
             return true;
 
-        if (! state.button.isChecked())
+        if (!state.button.isChecked())
             return false;
 
         state.button.setChecked(false);
@@ -144,7 +144,7 @@ public final class ExtraKeysView extends GridLayout {
         return true;
     }
 
-    void popup(View view, String text) {
+    void popup(final View view, final String text) {
         int width = view.getMeasuredWidth();
         int height = view.getMeasuredHeight();
         Button button = new Button(getContext(), null, android.R.attr.buttonBarButtonStyle);
@@ -286,16 +286,16 @@ public final class ExtraKeysView extends GridLayout {
      * Applies the 'controlCharsAliases' mapping to all the strings in *buttons*
      * Modifies the array, doesn't return a new one.
      */
-    void replaceAliases(String[][] buttons) {
-        for(int i = 0; i < buttons.length; i++)
-            for(int j = 0; j < buttons[i].length; j++)
+    void replaceAliases(final String[][] buttons) {
+        for (int i = 0; i < buttons.length; i++)
+            for (int j = 0; j < buttons[i].length; j++)
                 buttons[i][j] = controlCharsAliases.get(buttons[i][j], buttons[i][j]);
     }
     
     /**
      * General util function to compute the longest column length in a matrix.
      */
-    static int maximumLength(String[][] matrix) {
+    static int maximumLength(final String[][] matrix) {
         int m = 0;
         for (String[] aMatrix : matrix) m = Math.max(m, aMatrix.length);
         return m;
@@ -316,8 +316,8 @@ public final class ExtraKeysView extends GridLayout {
      * "−" will input a "−" character
      * "-_-" will input the string "-_-"
      */
-    void reload(String[][] buttons, CharDisplayMap charDisplayMap) {
-        for(SpecialButtonState state : specialButtons.values())
+    void reload(final String[][] buttons, final CharDisplayMap charDisplayMap) {
+        for (SpecialButtonState state : specialButtons.values())
             state.button = null;
             
         removeAllViews();
@@ -335,7 +335,7 @@ public final class ExtraKeysView extends GridLayout {
                 final String buttonText = buttons[row][col];
                 
                 Button button;
-                if(Arrays.asList("CTRL", "ALT", "FN").contains(buttonText)) {
+                if (Arrays.asList("CTRL", "ALT", "FN").contains(buttonText)) {
                     SpecialButtonState state = specialButtons.get(SpecialButton.valueOf(buttonText)); // for valueOf: https://stackoverflow.com/a/604426/1980630
                     state.isOn = true;
                     button = state.button = new ToggleButton(getContext(), null, android.R.attr.buttonBarButtonStyle);
@@ -361,7 +361,7 @@ public final class ExtraKeysView extends GridLayout {
                     }
 
                     View root = getRootView();
-                    if(Arrays.asList("CTRL", "ALT", "FN").contains(buttonText)) {
+                    if (Arrays.asList("CTRL", "ALT", "FN").contains(buttonText)) {
                         ToggleButton self = (ToggleButton) finalButton;
                         self.setChecked(self.isChecked());
                         self.setTextColor(self.isChecked() ? INTERESTING_COLOR : TEXT_COLOR);
@@ -427,8 +427,8 @@ public final class ExtraKeysView extends GridLayout {
 
                 LayoutParams param = new GridLayout.LayoutParams();
                 param.width = 0;
-                if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) { // special handle api 21
-                    param.height = (int)(37.5 * getResources().getDisplayMetrics().density + 0.5); // 37.5 equal to R.id.viewpager layout_height / rows in DP
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) { // special handle api 21
+                    param.height = (int) (37.5 * getResources().getDisplayMetrics().density + 0.5); // 37.5 equal to R.id.viewpager layout_height / rows in DP
                 } else {
                     param.height = 0;
                 }

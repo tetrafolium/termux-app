@@ -18,7 +18,7 @@ public final class TerminalColors {
     }
 
     /** Reset a particular indexed color with the default color from the color theme. */
-    public void reset(int index) {
+    public void reset(final int index) {
         mCurrentColors[index] = COLOR_SCHEME.mDefaultColors[index];
     }
 
@@ -32,7 +32,7 @@ public final class TerminalColors {
      * <p/>
      * Highest bit is set if successful, so return value is 0xFF${R}${G}${B}. Return 0 if failed.
      */
-    static int parse(String c) {
+    static int parse(final String c) {
         try {
             int skipInitial, skipBetween;
             if (c.charAt(0) == '#') {
@@ -68,7 +68,7 @@ public final class TerminalColors {
     }
 
     /** Try parse a color from a text parameter and into a specified index. */
-    public void tryParseColor(int intoIndex, String textParameter) {
+    public void tryParseColor(final int intoIndex, final String textParameter) {
         int c = parse(textParameter);
         if (c != 0) mCurrentColors[intoIndex] = c;
     }

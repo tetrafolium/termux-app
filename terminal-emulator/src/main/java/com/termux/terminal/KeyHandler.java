@@ -128,7 +128,7 @@ public final class KeyHandler {
         TERMCAP_TO_KEYCODE.put("@8", KEYCODE_NUMPAD_ENTER);
     }
 
-    static String getCodeFromTermcap(String termcap, boolean cursorKeysApplication, boolean keypadApplication) {
+    static String getCodeFromTermcap(final String termcap, final boolean cursorKeysApplication, final boolean keypadApplication) {
         Integer keyCodeAndMod = TERMCAP_TO_KEYCODE.get(termcap);
         if (keyCodeAndMod == null) return null;
         int keyCode = keyCodeAndMod;
@@ -148,7 +148,7 @@ public final class KeyHandler {
         return getCode(keyCode, keyMod, cursorKeysApplication, keypadApplication);
     }
 
-    public static String getCode(int keyCode, int keyMode, boolean cursorApp, boolean keypadApplication) {
+    public static String getCode(final int keyCode, final int keyMode, final boolean cursorApp, final boolean keypadApplication) {
         switch (keyCode) {
             case KEYCODE_DPAD_CENTER:
                 return "\015";
@@ -281,7 +281,7 @@ public final class KeyHandler {
         return null;
     }
 
-    private static String transformForModifiers(String start, int keymod, char lastChar) {
+    private static String transformForModifiers(final String start, final int keymod, final char lastChar) {
         int modifier;
         switch (keymod) {
             case KEYMOD_SHIFT:

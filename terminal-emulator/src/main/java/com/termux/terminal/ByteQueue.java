@@ -8,7 +8,7 @@ final class ByteQueue {
     private int mStoredBytes;
     private boolean mOpen = true;
 
-    public ByteQueue(int size) {
+    public ByteQueue(final int size) {
         mBuffer = new byte[size];
     }
 
@@ -17,7 +17,7 @@ final class ByteQueue {
         notify();
     }
 
-    public synchronized int read(byte[] buffer, boolean block) {
+    public synchronized int read(final byte[] buffer, final boolean block) {
         while (mStoredBytes == 0 && mOpen) {
             if (block) {
                 try {
@@ -56,7 +56,7 @@ final class ByteQueue {
      * <p/>
      * Returns whether the output was totally written, false if it was closed before.
      */
-    public boolean write(byte[] buffer, int offset, int lengthToWrite) {
+    public boolean write(final byte[] buffer, final int offset, final int lengthToWrite) {
         if (lengthToWrite + offset > buffer.length) {
             throw new IllegalArgumentException("length + offset > buffer.length");
         } else if (lengthToWrite <= 0) {

@@ -33,7 +33,7 @@ public final class TerminalRenderer {
 
     private final float[] asciiMeasures = new float[127];
 
-    public TerminalRenderer(int textSize, Typeface typeface) {
+    public TerminalRenderer(final int textSize, final Typeface typeface) {
         mTextSize = textSize;
         mTypeface = typeface;
 
@@ -54,8 +54,8 @@ public final class TerminalRenderer {
     }
 
     /** Render the terminal to a canvas with at a specified row scroll, and an optional rectangular selection. */
-    public final void render(TerminalEmulator mEmulator, Canvas canvas, int topRow,
-                             int selectionY1, int selectionY2, int selectionX1, int selectionX2) {
+    public final void render(final TerminalEmulator mEmulator, final Canvas canvas, final int topRow,
+                             final int selectionY1, final int selectionY2, final int selectionX1, final int selectionX2) {
         final boolean reverseVideo = mEmulator.isReverseVideo();
         final int endRow = topRow + mEmulator.mRows;
         final int columns = mEmulator.mColumns;
@@ -145,9 +145,9 @@ public final class TerminalRenderer {
         }
     }
 
-    private void drawTextRun(Canvas canvas, char[] text, int[] palette, float y, int startColumn, int runWidthColumns,
-                             int startCharIndex, int runWidthChars, float mes, int cursor, int cursorStyle,
-                             long textStyle, boolean reverseVideo) {
+    private void drawTextRun(final Canvas canvas, final char[] text, final int[] palette, final float y, final int startColumn, final int runWidthColumns,
+                             final int startCharIndex, final int runWidthChars, final float mes, final int cursor, final int cursorStyle,
+                             final long textStyle, final boolean reverseVideo) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         final int effect = TextStyle.decodeEffect(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);

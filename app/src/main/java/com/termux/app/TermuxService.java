@@ -96,7 +96,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
 
     @SuppressLint("Wakelock")
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
         String action = intent.getAction();
         if (ACTION_STOP_SERVICE.equals(action)) {
             mWantsToStop = true;
@@ -114,7 +114,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
                 mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, EmulatorDebug.LOG_TAG);
                 mWifiLock.acquire();
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     String packageName = getPackageName();
                     if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                         Intent whitelist = new Intent();
@@ -181,7 +181,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(final Intent intent) {
         return mBinder;
     }
 
@@ -245,9 +245,9 @@ public final class TermuxService extends Service implements SessionChangedCallba
 
         String newWakeAction = wakeLockHeld ? ACTION_UNLOCK_WAKE : ACTION_LOCK_WAKE;
         Intent toggleWakeLockIntent = new Intent(this, TermuxService.class).setAction(newWakeAction);
-        String actionTitle = res.getString(wakeLockHeld ?
-            R.string.notification_action_wake_unlock :
-            R.string.notification_action_wake_lock);
+        String actionTitle = res.getString(wakeLockHeld
+            ? R.string.notification_action_wake_unlock
+            : R.string.notification_action_wake_lock);
         int actionIcon = wakeLockHeld ? android.R.drawable.ic_lock_idle_lock : android.R.drawable.ic_lock_lock;
         builder.addAction(actionIcon, actionTitle, PendingIntent.getService(this, 0, toggleWakeLockIntent, 0));
 
@@ -281,7 +281,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
         return mTerminalSessions;
     }
 
-    TerminalSession createTermSession(String executablePath, String[] arguments, String cwd, boolean failSafe) {
+    TerminalSession createTermSession(final String executablePath, final String[] arguments, final String cwd, final boolean failSafe) {
         new File(HOME_PATH).mkdirs();
 
         if (cwd == null) cwd = HOME_PATH;
@@ -310,8 +310,8 @@ public final class TermuxService extends Service implements SessionChangedCallba
         String[] processArgs = BackgroundJob.setupProcessArgs(executablePath, arguments);
         executablePath = processArgs[0];
         int lastSlashIndex = executablePath.lastIndexOf('/');
-        String processName = (isLoginShell ? "-" : "") +
-            (lastSlashIndex == -1 ? executablePath : executablePath.substring(lastSlashIndex + 1));
+        String processName = (isLoginShell ? "-" : "")
+            + (lastSlashIndex == -1 ? executablePath : executablePath.substring(lastSlashIndex + 1));
 
         String[] args = new String[processArgs.length];
         args[0] = processName;
@@ -329,7 +329,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
         return session;
     }
 
-    public int removeTermSession(TerminalSession sessionToRemove) {
+    public int removeTermSession(final TerminalSession sessionToRemove) {
         int indexOfRemoved = mTerminalSessions.indexOf(sessionToRemove);
         mTerminalSessions.remove(indexOfRemoved);
         if (mTerminalSessions.isEmpty() && mWakeLock == null) {
@@ -343,7 +343,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
     }
 
     @Override
-    public void onTitleChanged(TerminalSession changedSession) {
+    public void onTitleChanged(final TerminalSession changedSession) {
         if (mSessionChangeCallback != null) mSessionChangeCallback.onTitleChanged(changedSession);
     }
 
@@ -354,22 +354,22 @@ public final class TermuxService extends Service implements SessionChangedCallba
     }
 
     @Override
-    public void onTextChanged(TerminalSession changedSession) {
+    public void onTextChanged(final TerminalSession changedSession) {
         if (mSessionChangeCallback != null) mSessionChangeCallback.onTextChanged(changedSession);
     }
 
     @Override
-    public void onClipboardText(TerminalSession session, String text) {
+    public void onClipboardText(final TerminalSession session, final String text) {
         if (mSessionChangeCallback != null) mSessionChangeCallback.onClipboardText(session, text);
     }
 
     @Override
-    public void onBell(TerminalSession session) {
+    public void onBell(final TerminalSession session) {
         if (mSessionChangeCallback != null) mSessionChangeCallback.onBell(session);
     }
 
     @Override
-    public void onColorsChanged(TerminalSession session) {
+    public void onColorsChanged(final TerminalSession session) {
         if (mSessionChangeCallback != null) mSessionChangeCallback.onColorsChanged(session);
     }
 
@@ -387,7 +387,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
         String channelDescription = "Notifications from Termux";
         int importance = NotificationManager.IMPORTANCE_LOW;
 
-        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName,importance);
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, importance);
         channel.setDescription(channelDescription);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.createNotificationChannel(channel);

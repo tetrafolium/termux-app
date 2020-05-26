@@ -4,17 +4,17 @@ import junit.framework.TestCase;
 
 public class TextStyleTest extends TestCase {
 
-	private static final int[] ALL_EFFECTS = new int[]{0, TextStyle.CHARACTER_ATTRIBUTE_BOLD, TextStyle.CHARACTER_ATTRIBUTE_ITALIC,
-			TextStyle.CHARACTER_ATTRIBUTE_UNDERLINE, TextStyle.CHARACTER_ATTRIBUTE_BLINK, TextStyle.CHARACTER_ATTRIBUTE_INVERSE,
-			TextStyle.CHARACTER_ATTRIBUTE_INVISIBLE, TextStyle.CHARACTER_ATTRIBUTE_STRIKETHROUGH, TextStyle.CHARACTER_ATTRIBUTE_PROTECTED,
-			TextStyle.CHARACTER_ATTRIBUTE_DIM};
+        private static final int[] ALL_EFFECTS = new int[]{0, TextStyle.CHARACTER_ATTRIBUTE_BOLD, TextStyle.CHARACTER_ATTRIBUTE_ITALIC,
+                        TextStyle.CHARACTER_ATTRIBUTE_UNDERLINE, TextStyle.CHARACTER_ATTRIBUTE_BLINK, TextStyle.CHARACTER_ATTRIBUTE_INVERSE,
+                        TextStyle.CHARACTER_ATTRIBUTE_INVISIBLE, TextStyle.CHARACTER_ATTRIBUTE_STRIKETHROUGH, TextStyle.CHARACTER_ATTRIBUTE_PROTECTED,
+                        TextStyle.CHARACTER_ATTRIBUTE_DIM};
 
-	public void testEncodingSingle() {
-		for (int fx : ALL_EFFECTS) {
-			for (int fg = 0; fg < TextStyle.NUM_INDEXED_COLORS; fg++) {
-				for (int bg = 0; bg < TextStyle.NUM_INDEXED_COLORS; bg++) {
-					long encoded = TextStyle.encode(fg, bg, fx);
-					assertEquals(fg, TextStyle.decodeForeColor(encoded));
+        public void testEncodingSingle() {
+                for (int fx : ALL_EFFECTS) {
+                        for (int fg = 0; fg < TextStyle.NUM_INDEXED_COLORS; fg++) {
+                                for (int bg = 0; bg < TextStyle.NUM_INDEXED_COLORS; bg++) {
+                                        long encoded = TextStyle.encode(fg, bg, fx);
+                                        assertEquals(fg, TextStyle.decodeForeColor(encoded));
 					assertEquals(bg, TextStyle.decodeBackColor(encoded));
 					assertEquals(fx, TextStyle.decodeEffect(encoded));
 				}

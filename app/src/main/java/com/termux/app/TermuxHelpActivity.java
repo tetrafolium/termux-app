@@ -18,7 +18,7 @@ public final class TermuxHelpActivity extends Activity {
     WebView mWebView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final RelativeLayout progressLayout = new RelativeLayout(this);
@@ -38,7 +38,7 @@ public final class TermuxHelpActivity extends Activity {
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
                 if (url.startsWith("https://wiki.termux.com")) {
                     // Inline help.
                     setContentView(progressLayout);
@@ -56,7 +56,7 @@ public final class TermuxHelpActivity extends Activity {
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(final WebView view, final String url) {
                 setContentView(mWebView);
             }
         });

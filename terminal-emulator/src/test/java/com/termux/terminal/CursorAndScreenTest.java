@@ -4,16 +4,16 @@ import org.junit.Assert;
 
 public class CursorAndScreenTest extends TerminalTestCase {
 
-	public void testDeleteLinesKeepsStyles() {
-		int cols = 5, rows = 5;
-		withTerminalSized(cols, rows);
-		for (int row = 0; row < 5; row++) {
-			for (int col = 0; col < 5; col++) {
-				// Foreground color to col, background to row:
-				enterString("\033[38;5;" + col + "m");
-				enterString("\033[48;5;" + row + "m");
-				enterString(Character.toString((char) ('A' + col + row * 5)));
-			}
+        public void testDeleteLinesKeepsStyles() {
+                int cols = 5, rows = 5;
+                withTerminalSized(cols, rows);
+                for (int row = 0; row < 5; row++) {
+                        for (int col = 0; col < 5; col++) {
+                                // Foreground color to col, background to row:
+                                enterString("\033[38;5;" + col + "m");
+                                enterString("\033[48;5;" + row + "m");
+                                enterString(Character.toString((char) ('A' + col + row * 5)));
+                        }
 		}
 		assertLinesAre("ABCDE", "FGHIJ", "KLMNO", "PQRST", "UVWXY");
 		for (int row = 0; row < 5; row++) {

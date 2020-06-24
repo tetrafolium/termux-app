@@ -5,17 +5,17 @@ package com.termux.terminal;
  */
 public class DeviceControlStringTest extends TerminalTestCase {
 
-	private static String hexEncode(String s) {
-		StringBuilder result = new StringBuilder();
-		for (int i = 0; i < s.length(); i++)
-			result.append(String.format("%02X", (int) s.charAt(i)));
-		return result.toString();
-	}
+        private static String hexEncode(String s) {
+                StringBuilder result = new StringBuilder();
+                for (int i = 0; i < s.length(); i++)
+                        result.append(String.format("%02X", (int) s.charAt(i)));
+                return result.toString();
+        }
 
-	private void assertCapabilityResponse(String cap, String expectedResponse) {
-		String input = "\033P+q" + hexEncode(cap) + "\033\\";
-		assertEnteringStringGivesResponse(input, "\033P1+r" + hexEncode(cap) + "=" + hexEncode(expectedResponse) + "\033\\");
-	}
+        private void assertCapabilityResponse(String cap, String expectedResponse) {
+                String input = "\033P+q" + hexEncode(cap) + "\033\\";
+                assertEnteringStringGivesResponse(input, "\033P1+r" + hexEncode(cap) + "=" + hexEncode(expectedResponse) + "\033\\");
+        }
 
 	public void testReportColorsAndName() {
 		// Request Termcap/Terminfo String. The string following the "q" is a list of names encoded in

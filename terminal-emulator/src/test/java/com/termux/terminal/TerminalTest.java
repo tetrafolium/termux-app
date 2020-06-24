@@ -4,18 +4,18 @@ import java.io.UnsupportedEncodingException;
 
 public class TerminalTest extends TerminalTestCase {
 
-	public void testCursorPositioning() throws Exception {
-		withTerminalSized(10, 10).placeCursorAndAssert(1, 2).placeCursorAndAssert(3, 5).placeCursorAndAssert(2, 2).enterString("A")
-				.assertCursorAt(2, 3);
-	}
+        public void testCursorPositioning() throws Exception {
+                withTerminalSized(10, 10).placeCursorAndAssert(1, 2).placeCursorAndAssert(3, 5).placeCursorAndAssert(2, 2).enterString("A")
+                                .assertCursorAt(2, 3);
+        }
 
-	public void testScreen() throws UnsupportedEncodingException {
-		withTerminalSized(3, 3);
-		assertLinesAre("   ", "   ", "   ");
+        public void testScreen() throws UnsupportedEncodingException {
+                withTerminalSized(3, 3);
+                assertLinesAre("   ", "   ", "   ");
 
-		assertEquals("", mTerminal.getScreen().getTranscriptText());
-		enterString("hi").assertLinesAre("hi ", "   ", "   ");
-		assertEquals("hi", mTerminal.getScreen().getTranscriptText());
+                assertEquals("", mTerminal.getScreen().getTranscriptText());
+                enterString("hi").assertLinesAre("hi ", "   ", "   ");
+                assertEquals("hi", mTerminal.getScreen().getTranscriptText());
 		enterString("\r\nu");
 		assertEquals("hi\nu", mTerminal.getScreen().getTranscriptText());
 		mTerminal.reset();

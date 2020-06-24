@@ -3,18 +3,18 @@ package com.termux.terminal;
 
 public class HistoryTest extends TerminalTestCase {
 
-	public void testHistory() {
-		final int rows = 3;
-		final int cols = 3;
-		withTerminalSized(cols, rows).enterString("111222333444555666777888999");
-		assertCursorAt(2, 2);
-		assertLinesAre("777", "888", "999");
-		assertHistoryStartsWith("666", "555");
+        public void testHistory() {
+                final int rows = 3;
+                final int cols = 3;
+                withTerminalSized(cols, rows).enterString("111222333444555666777888999");
+                assertCursorAt(2, 2);
+                assertLinesAre("777", "888", "999");
+                assertHistoryStartsWith("666", "555");
 
-		mTerminal.resize(cols, 2);
-		assertHistoryStartsWith("777", "666", "555");
+                mTerminal.resize(cols, 2);
+                assertHistoryStartsWith("777", "666", "555");
 
-		mTerminal.resize(cols, 3);
+                mTerminal.resize(cols, 3);
 		assertHistoryStartsWith("666", "555");
 	}
 

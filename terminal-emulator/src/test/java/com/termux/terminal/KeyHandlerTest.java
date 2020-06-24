@@ -6,16 +6,16 @@ import junit.framework.TestCase;
 
 public class KeyHandlerTest extends TestCase {
 
-	private static String stringToHex(String s) {
-		if (s == null) return null;
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < s.length(); i++) {
-			if (buffer.length() > 0) {
-				buffer.append(" ");
-			}
-			buffer.append("0x");
-			buffer.append(Integer.toHexString(s.charAt(i)));
-		}
+        private static String stringToHex(String s) {
+                if (s == null) return null;
+                StringBuilder buffer = new StringBuilder();
+                for (int i = 0; i < s.length(); i++) {
+                        if (buffer.length() > 0) {
+                                buffer.append(" ");
+                        }
+                        buffer.append("0x");
+                        buffer.append(Integer.toHexString(s.charAt(i)));
+                }
 		return buffer.toString();
 	}
 

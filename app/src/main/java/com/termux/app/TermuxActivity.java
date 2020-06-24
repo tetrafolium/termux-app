@@ -287,7 +287,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         newSessionButton.setOnLongClickListener(v -> {
             DialogUtils.textInput(TermuxActivity.this, R.string.session_new_named_title, null, R.string.session_new_named_positive_button,
                 text -> addNewSession(false, text), R.string.new_session_failsafe, text -> addNewSession(true, text)
-                , -1, null, null);
+, -1, null, null);
             return true;
         });
 
@@ -842,7 +842,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
                 startActivity(new Intent(this, TermuxHelpActivity.class));
                 return true;
             case CONTEXTMENU_TOGGLE_KEEP_SCREEN_ON: {
-                if(mTerminalView.getKeepScreenOn()) {
+                if (mTerminalView.getKeepScreenOn()) {
                     mTerminalView.setKeepScreenOn(false);
                     mSettings.setScreenAlwaysOn(this, false);
                 } else {

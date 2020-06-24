@@ -924,7 +924,7 @@ public final class TerminalView extends View {
     }
 
     private CharSequence getText() {
-        return mEmulator.getScreen().getSelectedText(0, mTopRow, mEmulator.mColumns, mTopRow +mEmulator.mRows);
+        return mEmulator.getScreen().getSelectedText(0, mTopRow, mEmulator.mColumns, mTopRow + mEmulator.mRows);
     }
 
 }

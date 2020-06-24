@@ -4,16 +4,16 @@ import junit.framework.TestCase;
 
 public class WcWidthTest extends TestCase {
 
-	private static void assertWidthIs(int expectedWidth, int codePoint) {
-		int wcWidth = WcWidth.width(codePoint);
-		assertEquals(expectedWidth, wcWidth);
-	}
+        private static void assertWidthIs(int expectedWidth, int codePoint) {
+                int wcWidth = WcWidth.width(codePoint);
+                assertEquals(expectedWidth, wcWidth);
+        }
 
-	public void testPrintableAscii() {
-		for (int i = 0x20; i <= 0x7E; i++) {
-			assertWidthIs(1, i);
-		}
-	}
+        public void testPrintableAscii() {
+                for (int i = 0x20; i <= 0x7E; i++) {
+                        assertWidthIs(1, i);
+                }
+        }
 
     public void testSomeWidthOne() {
         assertWidthIs(1, 'å');
@@ -22,7 +22,7 @@ public class WcWidthTest extends TestCase {
         assertWidthIs(1, 0x23F2);
     }
 
-	public void testSomeWide() {
+        public void testSomeWide() {
 		assertWidthIs(2, 'Ａ');
 		assertWidthIs(2, 'Ｂ');
 		assertWidthIs(2, 'Ｃ');

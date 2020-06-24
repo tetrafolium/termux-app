@@ -4,16 +4,16 @@ import junit.framework.TestCase;
 
 public class ByteQueueTest extends TestCase {
 
-	private static void assertArrayEquals(byte[] expected, byte[] actual) {
-		if (expected.length != actual.length) {
-			fail("Difference array length");
-		}
-		for (int i = 0; i < expected.length; i++) {
-			if (expected[i] != actual[i]) {
-				fail("Inequals at index=" + i + ", expected=" + (int) expected[i] + ", actual=" + (int) actual[i]);
-			}
-		}
-	}
+        private static void assertArrayEquals(byte[] expected, byte[] actual) {
+                if (expected.length != actual.length) {
+                        fail("Difference array length");
+                }
+                for (int i = 0; i < expected.length; i++) {
+                        if (expected[i] != actual[i]) {
+                                fail("Inequals at index=" + i + ", expected=" + (int) expected[i] + ", actual=" + (int) actual[i]);
+                        }
+                }
+        }
 
 	public void testCompleteWrites() throws Exception {
 		ByteQueue q = new ByteQueue(10);

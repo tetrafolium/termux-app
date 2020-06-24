@@ -192,8 +192,8 @@ final class TermuxInstaller {
                 case "x86": return "i686";
             }
         }
-        throw new RuntimeException("Unable to determine arch from Build.SUPPORTED_ABIS =  " +
-            Arrays.toString(Build.SUPPORTED_ABIS));
+        throw new RuntimeException("Unable to determine arch from Build.SUPPORTED_ABIS =  "
+            + Arrays.toString(Build.SUPPORTED_ABIS));
     }
 
     /** Delete a folder and all its content or throw. Don't follow symlinks. */

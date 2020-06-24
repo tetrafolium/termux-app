@@ -13,19 +13,19 @@ import java.util.Set;
 
 public abstract class TerminalTestCase extends TestCase {
 
-	public static class MockTerminalOutput extends TerminalOutput {
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		public final List<ChangedTitle> titleChanges = new ArrayList<>();
-		public final List<String> clipboardPuts = new ArrayList<>();
-		public int bellsRung = 0;
+        public static class MockTerminalOutput extends TerminalOutput {
+                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                public final List<ChangedTitle> titleChanges = new ArrayList<>();
+                public final List<String> clipboardPuts = new ArrayList<>();
+                public int bellsRung = 0;
         public int colorsChanged = 0;
 
-		@Override
-		public void write(byte[] data, int offset, int count) {
-			baos.write(data, offset, count);
-		}
+                @Override
+                public void write(byte[] data, int offset, int count) {
+                        baos.write(data, offset, count);
+                }
 
-		public String getOutputAndClear() {
+                public String getOutputAndClear() {
             String result = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             baos.reset();
             return result;

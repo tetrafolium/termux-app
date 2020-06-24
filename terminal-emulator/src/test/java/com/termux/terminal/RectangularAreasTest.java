@@ -2,17 +2,17 @@ package com.termux.terminal;
 
 public class RectangularAreasTest extends TerminalTestCase {
 
-	/** http://www.vt100.net/docs/vt510-rm/DECFRA */
-	public void testFillRectangularArea() {
-		withTerminalSized(3, 3).enterString("\033[88$x").assertLinesAre("XXX", "XXX", "XXX");
-		withTerminalSized(3, 3).enterString("\033[88;1;1;2;10$x").assertLinesAre("XXX", "XXX", "   ");
-		withTerminalSized(3, 3).enterString("\033[88;2;1;3;10$x").assertLinesAre("   ", "XXX", "XXX");
-		withTerminalSized(3, 3).enterString("\033[88;1;1;100;1$x").assertLinesAre("X  ", "X  ", "X  ");
-		withTerminalSized(3, 3).enterString("\033[88;1;1;100;2$x").assertLinesAre("XX ", "XX ", "XX ");
-		withTerminalSized(3, 3).enterString("\033[88;100;1;100;2$x").assertLinesAre("   ", "   ", "   ");
-	}
+        /** http://www.vt100.net/docs/vt510-rm/DECFRA */
+        public void testFillRectangularArea() {
+                withTerminalSized(3, 3).enterString("\033[88$x").assertLinesAre("XXX", "XXX", "XXX");
+                withTerminalSized(3, 3).enterString("\033[88;1;1;2;10$x").assertLinesAre("XXX", "XXX", "   ");
+                withTerminalSized(3, 3).enterString("\033[88;2;1;3;10$x").assertLinesAre("   ", "XXX", "XXX");
+                withTerminalSized(3, 3).enterString("\033[88;1;1;100;1$x").assertLinesAre("X  ", "X  ", "X  ");
+                withTerminalSized(3, 3).enterString("\033[88;1;1;100;2$x").assertLinesAre("XX ", "XX ", "XX ");
+                withTerminalSized(3, 3).enterString("\033[88;100;1;100;2$x").assertLinesAre("   ", "   ", "   ");
+        }
 
-	/** http://www.vt100.net/docs/vt510-rm/DECERA */
+        /** http://www.vt100.net/docs/vt510-rm/DECERA */
 	public void testEraseRectangularArea() {
 		withTerminalSized(3, 3).enterString("ABCDEFGHI\033[$z").assertLinesAre("   ", "   ", "   ");
 		withTerminalSized(3, 3).enterString("ABCDEFGHI\033[1;1;2;10$z").assertLinesAre("   ", "   ", "GHI");

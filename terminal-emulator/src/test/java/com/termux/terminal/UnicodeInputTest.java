@@ -4,17 +4,17 @@ import java.io.UnsupportedEncodingException;
 
 public class UnicodeInputTest extends TerminalTestCase {
 
-	public void testIllFormedUtf8SuccessorByteNotConsumed() throws Exception {
-		// The Unicode Standard Version 6.2 – Core Specification (http://www.unicode.org/versions/Unicode6.2.0/ch03.pdf):
-		// "If the converter encounters an ill-formed UTF-8 code unit sequence which starts with a valid first byte, but which does not
-		// continue with valid successor bytes (see Table 3-7), it must not consume the successor bytes as part of the ill-formed
-		// subsequence whenever those successor bytes themselves constitute part of a well-formed UTF-8 code unit subsequence."
-		withTerminalSized(5, 5);
-		mTerminal.append(new byte[]{(byte) 0b11101111, (byte) 'a'}, 2);
-		assertLineIs(0, ((char) TerminalEmulator.UNICODE_REPLACEMENT_CHAR) + "a   ");
+        public void testIllFormedUtf8SuccessorByteNotConsumed() throws Exception {
+                // The Unicode Standard Version 6.2 – Core Specification (http://www.unicode.org/versions/Unicode6.2.0/ch03.pdf):
+                // "If the converter encounters an ill-formed UTF-8 code unit sequence which starts with a valid first byte, but which does not
+                // continue with valid successor bytes (see Table 3-7), it must not consume the successor bytes as part of the ill-formed
+                // subsequence whenever those successor bytes themselves constitute part of a well-formed UTF-8 code unit subsequence."
+                withTerminalSized(5, 5);
+                mTerminal.append(new byte[]{(byte) 0b11101111, (byte) 'a'}, 2);
+                assertLineIs(0, ((char) TerminalEmulator.UNICODE_REPLACEMENT_CHAR) + "a   ");
 
-		// https://code.google.com/p/chromium/issues/detail?id=212704
-		byte[] input = new byte[]{
+                // https://code.google.com/p/chromium/issues/detail?id=212704
+                byte[] input = new byte[]{
 				(byte) 0x61, (byte) 0xF1,
 				(byte) 0x80, (byte) 0x80,
 				(byte) 0xe1, (byte) 0x80,

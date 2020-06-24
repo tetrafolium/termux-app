@@ -7,17 +7,17 @@ package com.termux.terminal;
  */
 public class ScrollRegionTest extends TerminalTestCase {
 
-	public void testScrollRegionTop() {
-		withTerminalSized(3, 4).enterString("111222333444").assertLinesAre("111", "222", "333", "444");
-		enterString("\033[2r").assertCursorAt(0, 0);
-		enterString("\r\n\r\n\r\n\r\nCDEFGH").assertLinesAre("111", "444", "CDE", "FGH").assertHistoryStartsWith("333");
-		enterString("IJK").assertLinesAre("111", "CDE", "FGH", "IJK").assertHistoryStartsWith("444");
-		// Reset scroll region and enter line:
-		enterString("\033[r").enterString("\r\n\r\n\r\n").enterString("LMNOPQ").assertLinesAre("CDE", "FGH", "LMN", "OPQ");
-	}
+        public void testScrollRegionTop() {
+                withTerminalSized(3, 4).enterString("111222333444").assertLinesAre("111", "222", "333", "444");
+                enterString("\033[2r").assertCursorAt(0, 0);
+                enterString("\r\n\r\n\r\n\r\nCDEFGH").assertLinesAre("111", "444", "CDE", "FGH").assertHistoryStartsWith("333");
+                enterString("IJK").assertLinesAre("111", "CDE", "FGH", "IJK").assertHistoryStartsWith("444");
+                // Reset scroll region and enter line:
+                enterString("\033[r").enterString("\r\n\r\n\r\n").enterString("LMNOPQ").assertLinesAre("CDE", "FGH", "LMN", "OPQ");
+        }
 
-	public void testScrollRegionBottom() {
-		withTerminalSized(3, 4).enterString("111222333444");
+        public void testScrollRegionBottom() {
+                withTerminalSized(3, 4).enterString("111222333444");
 		assertLinesAre("111", "222", "333", "444");
 		enterString("\033[1;3r").assertCursorAt(0, 0);
 		enterString("\r\n\r\nCDEFGH").assertLinesAre("222", "CDE", "FGH", "444").assertHistoryStartsWith("111");

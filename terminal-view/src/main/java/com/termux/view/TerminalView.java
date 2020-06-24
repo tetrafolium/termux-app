@@ -106,11 +106,9 @@ public final class TerminalView extends View {
                     return true;
                 }
                 requestFocus();
-                if (!mEmulator.isMouseTrackingActive()) {
-                    if (!e.isFromSource(InputDevice.SOURCE_MOUSE)) {
-                        mClient.onSingleTapUp(e);
-                        return true;
-                    }
+                if ((!mEmulator.isMouseTrackingActive()) && (!e.isFromSource(InputDevice.SOURCE_MOUSE))) {
+                    mClient.onSingleTapUp(e);
+                    return true;
                 }
                 return false;
             }

@@ -302,7 +302,7 @@ private static final int[][] WIDE_EASTASIAN = {
 	{0x1100, 0x115f}, // Hangul Choseong Kiyeok  ..Hangul Choseong Filler
 	{0x231a, 0x231b}, // Watch                   ..Hourglass
 	{0x2329, 0x232a}, // Left-pointing Angle Brac..Right-pointing Angle Bra
-	{0x23e9, 0x23ec}, // Black Right-pointing Dou..Black Down-pointing Doub
+	{0x23e9, 0x23ec}, // Black Right-pointing Dou..Black Down-pointing Doubt
 	{0x23f0, 0x23f0}, // Alarm Clock             ..Alarm Clock
 	{0x23f3, 0x23f3}, // Hourglass With Flowing S..Hourglass With Flowing S
 	{0x25fd, 0x25fe}, // White Medium Small Squar..Black Medium Small Squar

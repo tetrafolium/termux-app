@@ -430,12 +430,12 @@ public final class WcWidth {
     /** Return the terminal display width of a code point: 0, 1 || 2. */
     public static int width(int ucs) {
         if (ucs == 0
-            || ucs == 0x034F
-            || (0x200B <= ucs && ucs <= 0x200F)
-            || ucs == 0x2028
-            || ucs == 0x2029
-            || (0x202A <= ucs && ucs <= 0x202E)
-            || (0x2060 <= ucs && ucs <= 0x2063)) {
+                || ucs == 0x034F
+                || (0x200B <= ucs && ucs <= 0x200F)
+                || ucs == 0x2028
+                || ucs == 0x2029
+                || (0x202A <= ucs && ucs <= 0x202E)
+                || (0x2060 <= ucs && ucs <= 0x2063)) {
             return 0;
         }
 

@@ -246,8 +246,8 @@ public final class TermuxService extends Service implements SessionChangedCallba
         String newWakeAction = wakeLockHeld ? ACTION_UNLOCK_WAKE : ACTION_LOCK_WAKE;
         Intent toggleWakeLockIntent = new Intent(this, TermuxService.class).setAction(newWakeAction);
         String actionTitle = res.getString(wakeLockHeld
-            ? R.string.notification_action_wake_unlock
-            : R.string.notification_action_wake_lock);
+                                           ? R.string.notification_action_wake_unlock
+                                           : R.string.notification_action_wake_lock);
         int actionIcon = wakeLockHeld ? android.R.drawable.ic_lock_idle_lock : android.R.drawable.ic_lock_lock;
         builder.addAction(actionIcon, actionTitle, PendingIntent.getService(this, 0, toggleWakeLockIntent, 0));
 
@@ -291,7 +291,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
 
         if (executablePath == null) {
             if (!failSafe) {
-                for (String shellBinary : new String[]{"login", "bash", "zsh"}) {
+                for (String shellBinary : new String[] {"login", "bash", "zsh"}) {
                     File shellFile = new File(PREFIX_PATH + "/bin/" + shellBinary);
                     if (shellFile.canExecute()) {
                         executablePath = shellFile.getAbsolutePath();
@@ -311,7 +311,7 @@ public final class TermuxService extends Service implements SessionChangedCallba
         executablePath = processArgs[0];
         int lastSlashIndex = executablePath.lastIndexOf('/');
         String processName = (isLoginShell ? "-" : "")
-            + (lastSlashIndex == -1 ? executablePath : executablePath.substring(lastSlashIndex + 1));
+                             + (lastSlashIndex == -1 ? executablePath : executablePath.substring(lastSlashIndex + 1));
 
         String[] args = new String[processArgs.length];
         args[0] = processName;

@@ -88,7 +88,7 @@ public final class TerminalBuffer {
             if (lastPrintingCharIndex != -1)
                 builder.append(line, x1Index, lastPrintingCharIndex - x1Index + 1);
             if ((!joinBackLines || !rowLineWrap)
-                && row < selY2 && row < mScreenRows - 1) builder.append('\n');
+                    && row < selY2 && row < mScreenRows - 1) builder.append('\n');
         }
         return builder.toString();
     }

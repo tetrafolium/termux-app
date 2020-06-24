@@ -48,8 +48,8 @@ public final class DialogUtils {
         layout.addView(input);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-            .setTitle(titleText).setView(layout)
-            .setPositiveButton(positiveButtonText, (d, whichButton) -> onPositive.onTextSet(input.getText().toString()));
+        .setTitle(titleText).setView(layout)
+        .setPositiveButton(positiveButtonText, (d, whichButton) -> onPositive.onTextSet(input.getText().toString()));
 
         if (onNeutral != null) {
             builder.setNeutralButton(neutralButtonText, (dialog, which) -> onNeutral.onTextSet(input.getText().toString()));

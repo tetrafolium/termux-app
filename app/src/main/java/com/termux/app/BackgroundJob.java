@@ -72,7 +72,7 @@ public final class BackgroundJob {
                     // Ignore.
                 }
             }
-        }.start();
+        } .start();
 
 
         new Thread() {

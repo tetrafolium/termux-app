@@ -129,7 +129,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
 
     final SoundPool mBellSoundPool = new SoundPool.Builder().setMaxStreams(1).setAudioAttributes(
         new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION).build()).build();
+        .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION).build()).build();
     int mBellSoundId;
 
     private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
@@ -192,7 +192,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE_PERMISSION_STORAGE);
+                requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE_PERMISSION_STORAGE);
                 return false;
             }
         } else {
@@ -286,8 +286,8 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         newSessionButton.setOnClickListener(v -> addNewSession(false, null));
         newSessionButton.setOnLongClickListener(v -> {
             DialogUtils.textInput(TermuxActivity.this, R.string.session_new_named_title, null, R.string.session_new_named_positive_button,
-                text -> addNewSession(false, text), R.string.new_session_failsafe, text -> addNewSession(true, text)
-, -1, null, null);
+                                  text -> addNewSession(false, text), R.string.new_session_failsafe, text -> addNewSession(true, text)
+                                  , -1, null, null);
             return true;
         });
 
@@ -389,7 +389,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
             public void onClipboardText(TerminalSession session, String text) {
                 if (!mIsVisible) return;
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setPrimaryClip(new ClipData(null, new String[]{"text/plain"}, new ClipData.Item(text)));
+                clipboard.setPrimaryClip(new ClipData(null, new String[] {"text/plain"}, new ClipData.Item(text)));
             }
 
             @Override
@@ -397,15 +397,15 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
                 if (!mIsVisible) return;
 
                 switch (mSettings.mBellBehaviour) {
-                    case TermuxPreferences.BELL_BEEP:
-                        mBellSoundPool.play(mBellSoundId, 1.f, 1.f, 1, 0, 1.f);
-                        break;
-                    case TermuxPreferences.BELL_VIBRATE:
-                        BellUtil.getInstance(TermuxActivity.this).doBell();
-                        break;
-                    case TermuxPreferences.BELL_IGNORE:
-                        // Ignore the bell character.
-                        break;
+                case TermuxPreferences.BELL_BEEP:
+                    mBellSoundPool.play(mBellSoundId, 1.f, 1.f, 1, 0, 1.f);
+                    break;
+                case TermuxPreferences.BELL_VIBRATE:
+                    BellUtil.getInstance(TermuxActivity.this).doBell();
+                    break;
+                case TermuxPreferences.BELL_IGNORE:
+                    // Ignore the bell character.
+                    break;
                 }
 
             }
@@ -587,7 +587,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
     void addNewSession(boolean failSafe, String sessionName) {
         if (mTermService.getSessions().size() >= MAX_SESSIONS) {
             new AlertDialog.Builder(this).setTitle(R.string.max_terminals_reached_title).setMessage(R.string.max_terminals_reached_message)
-                .setPositiveButton(android.R.string.ok, null).show();
+            .setPositiveButton(android.R.string.ok, null).show();
         } else {
             TerminalSession newSession = mTermService.createTermSession(null, null, null, failSafe);
             if (sessionName != null) {
@@ -721,8 +721,8 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         regex_sb.append(")");
 
         final Pattern urlPattern = Pattern.compile(
-            regex_sb.toString(),
-            Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+                                       regex_sb.toString(),
+                                       Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
         LinkedHashSet<CharSequence> urlSet = new LinkedHashSet<>();
         Matcher matcher = urlPattern.matcher(text);
@@ -781,78 +781,78 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         TerminalSession session = getCurrentTermSession();
 
         switch (item.getItemId()) {
-            case CONTEXTMENU_SELECT_URL_ID:
-                showUrlSelection();
-                return true;
-            case CONTEXTMENU_SHARE_TRANSCRIPT_ID:
-                if (session != null) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    String transcriptText = session.getEmulator().getScreen().getTranscriptTextWithoutJoinedLines().trim();
-                    // See https://github.com/termux/termux-app/issues/1166.
-                    final int MAX_LENGTH = 100_000;
-                    if (transcriptText.length() > MAX_LENGTH) {
-                        int cutOffIndex = transcriptText.length() - MAX_LENGTH;
-                        int nextNewlineIndex = transcriptText.indexOf('\n', cutOffIndex);
-                        if (nextNewlineIndex != -1 && nextNewlineIndex != transcriptText.length() - 1) {
-                            cutOffIndex = nextNewlineIndex + 1;
-                        }
-                        transcriptText = transcriptText.substring(cutOffIndex).trim();
+        case CONTEXTMENU_SELECT_URL_ID:
+            showUrlSelection();
+            return true;
+        case CONTEXTMENU_SHARE_TRANSCRIPT_ID:
+            if (session != null) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String transcriptText = session.getEmulator().getScreen().getTranscriptTextWithoutJoinedLines().trim();
+                // See https://github.com/termux/termux-app/issues/1166.
+                final int MAX_LENGTH = 100_000;
+                if (transcriptText.length() > MAX_LENGTH) {
+                    int cutOffIndex = transcriptText.length() - MAX_LENGTH;
+                    int nextNewlineIndex = transcriptText.indexOf('\n', cutOffIndex);
+                    if (nextNewlineIndex != -1 && nextNewlineIndex != transcriptText.length() - 1) {
+                        cutOffIndex = nextNewlineIndex + 1;
                     }
-                    intent.putExtra(Intent.EXTRA_TEXT, transcriptText);
-                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_transcript_title));
-                    startActivity(Intent.createChooser(intent, getString(R.string.share_transcript_chooser_title)));
+                    transcriptText = transcriptText.substring(cutOffIndex).trim();
                 }
-                return true;
-            case CONTEXTMENU_PASTE_ID:
-                doPaste();
-                return true;
-            case CONTEXTMENU_KILL_PROCESS_ID:
-                final AlertDialog.Builder b = new AlertDialog.Builder(this);
-                b.setIcon(android.R.drawable.ic_dialog_alert);
-                b.setMessage(R.string.confirm_kill_process);
-                b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
-                    dialog.dismiss();
-                    getCurrentTermSession().finishIfRunning();
-                });
-                b.setNegativeButton(android.R.string.no, null);
-                b.show();
-                return true;
-            case CONTEXTMENU_RESET_TERMINAL_ID: {
-                if (session != null) {
-                    session.reset();
-                    showToast(getResources().getString(R.string.reset_toast_notification), true);
-                }
-                return true;
+                intent.putExtra(Intent.EXTRA_TEXT, transcriptText);
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_transcript_title));
+                startActivity(Intent.createChooser(intent, getString(R.string.share_transcript_chooser_title)));
             }
-            case CONTEXTMENU_STYLING_ID: {
-                Intent stylingIntent = new Intent();
-                stylingIntent.setClassName("com.termux.styling", "com.termux.styling.TermuxStyleActivity");
-                try {
-                    startActivity(stylingIntent);
-                } catch (ActivityNotFoundException | IllegalArgumentException e) {
-                    // The startActivity() call is not documented to throw IllegalArgumentException.
-                    // However, crash reporting shows that it sometimes does, so catch it here.
-                    new AlertDialog.Builder(this).setMessage(R.string.styling_not_installed)
-                        .setPositiveButton(R.string.styling_install, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.termux.styling")))).setNegativeButton(android.R.string.cancel, null).show();
-                }
-                return true;
+            return true;
+        case CONTEXTMENU_PASTE_ID:
+            doPaste();
+            return true;
+        case CONTEXTMENU_KILL_PROCESS_ID:
+            final AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setIcon(android.R.drawable.ic_dialog_alert);
+            b.setMessage(R.string.confirm_kill_process);
+            b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+                dialog.dismiss();
+                getCurrentTermSession().finishIfRunning();
+            });
+            b.setNegativeButton(android.R.string.no, null);
+            b.show();
+            return true;
+        case CONTEXTMENU_RESET_TERMINAL_ID: {
+            if (session != null) {
+                session.reset();
+                showToast(getResources().getString(R.string.reset_toast_notification), true);
             }
-            case CONTEXTMENU_HELP_ID:
-                startActivity(new Intent(this, TermuxHelpActivity.class));
-                return true;
-            case CONTEXTMENU_TOGGLE_KEEP_SCREEN_ON: {
-                if (mTerminalView.getKeepScreenOn()) {
-                    mTerminalView.setKeepScreenOn(false);
-                    mSettings.setScreenAlwaysOn(this, false);
-                } else {
-                    mTerminalView.setKeepScreenOn(true);
-                    mSettings.setScreenAlwaysOn(this, true);
-                }
-                return true;
+            return true;
+        }
+        case CONTEXTMENU_STYLING_ID: {
+            Intent stylingIntent = new Intent();
+            stylingIntent.setClassName("com.termux.styling", "com.termux.styling.TermuxStyleActivity");
+            try {
+                startActivity(stylingIntent);
+            } catch (ActivityNotFoundException | IllegalArgumentException e) {
+                // The startActivity() call is not documented to throw IllegalArgumentException.
+                // However, crash reporting shows that it sometimes does, so catch it here.
+                new AlertDialog.Builder(this).setMessage(R.string.styling_not_installed)
+                .setPositiveButton(R.string.styling_install, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.termux.styling")))).setNegativeButton(android.R.string.cancel, null).show();
             }
-            default:
-                return super.onContextItemSelected(item);
+            return true;
+        }
+        case CONTEXTMENU_HELP_ID:
+            startActivity(new Intent(this, TermuxHelpActivity.class));
+            return true;
+        case CONTEXTMENU_TOGGLE_KEEP_SCREEN_ON: {
+            if (mTerminalView.getKeepScreenOn()) {
+                mTerminalView.setKeepScreenOn(false);
+                mSettings.setScreenAlwaysOn(this, false);
+            } else {
+                mTerminalView.setKeepScreenOn(true);
+                mSettings.setScreenAlwaysOn(this, true);
+            }
+            return true;
+        }
+        default:
+            return super.onContextItemSelected(item);
         }
     }
 

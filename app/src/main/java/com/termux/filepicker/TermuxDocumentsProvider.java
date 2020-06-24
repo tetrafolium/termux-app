@@ -40,7 +40,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
 
     // The default columns to return information about a root if no specific
     // columns are requested in a query.
-    private static final String[] DEFAULT_ROOT_PROJECTION = new String[]{
+    private static final String[] DEFAULT_ROOT_PROJECTION = new String[] {
         Root.COLUMN_ROOT_ID,
         Root.COLUMN_MIME_TYPES,
         Root.COLUMN_FLAGS,
@@ -53,7 +53,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
 
     // The default columns to return information about a document if no specific
     // columns are requested in a query.
-    private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[]{
+    private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
         Document.COLUMN_DOCUMENT_ID,
         Document.COLUMN_MIME_TYPE,
         Document.COLUMN_DISPLAY_NAME,
@@ -211,7 +211,7 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
      * @param file   the File object representing the desired file (may be null if given docID)
      */
     private void includeFile(MatrixCursor result, String docId, File file)
-        throws FileNotFoundException {
+    throws FileNotFoundException {
         if (docId == null) {
             docId = getDocIdForFile(file);
         } else {

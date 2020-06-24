@@ -129,90 +129,90 @@ public final class TermuxViewClient implements TerminalViewClient {
             boolean altDown = false;
             int lowerCase = Character.toLowerCase(codePoint);
             switch (lowerCase) {
-                // Arrow keys.
-                case 'w':
-                    resultingKeyCode = KeyEvent.KEYCODE_DPAD_UP;
-                    break;
-                case 'a':
-                    resultingKeyCode = KeyEvent.KEYCODE_DPAD_LEFT;
-                    break;
-                case 's':
-                    resultingKeyCode = KeyEvent.KEYCODE_DPAD_DOWN;
-                    break;
-                case 'd':
-                    resultingKeyCode = KeyEvent.KEYCODE_DPAD_RIGHT;
-                    break;
+            // Arrow keys.
+            case 'w':
+                resultingKeyCode = KeyEvent.KEYCODE_DPAD_UP;
+                break;
+            case 'a':
+                resultingKeyCode = KeyEvent.KEYCODE_DPAD_LEFT;
+                break;
+            case 's':
+                resultingKeyCode = KeyEvent.KEYCODE_DPAD_DOWN;
+                break;
+            case 'd':
+                resultingKeyCode = KeyEvent.KEYCODE_DPAD_RIGHT;
+                break;
 
-                // Page up and down.
-                case 'p':
-                    resultingKeyCode = KeyEvent.KEYCODE_PAGE_UP;
-                    break;
-                case 'n':
-                    resultingKeyCode = KeyEvent.KEYCODE_PAGE_DOWN;
-                    break;
+            // Page up and down.
+            case 'p':
+                resultingKeyCode = KeyEvent.KEYCODE_PAGE_UP;
+                break;
+            case 'n':
+                resultingKeyCode = KeyEvent.KEYCODE_PAGE_DOWN;
+                break;
 
-                // Some special keys:
-                case 't':
-                    resultingKeyCode = KeyEvent.KEYCODE_TAB;
-                    break;
-                case 'i':
-                    resultingKeyCode = KeyEvent.KEYCODE_INSERT;
-                    break;
-                case 'h':
-                    resultingCodePoint = '~';
-                    break;
+            // Some special keys:
+            case 't':
+                resultingKeyCode = KeyEvent.KEYCODE_TAB;
+                break;
+            case 'i':
+                resultingKeyCode = KeyEvent.KEYCODE_INSERT;
+                break;
+            case 'h':
+                resultingCodePoint = '~';
+                break;
 
-                // Special characters to input.
-                case 'u':
-                    resultingCodePoint = '_';
-                    break;
-                case 'l':
-                    resultingCodePoint = '|';
-                    break;
+            // Special characters to input.
+            case 'u':
+                resultingCodePoint = '_';
+                break;
+            case 'l':
+                resultingCodePoint = '|';
+                break;
 
-                // Function keys.
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    resultingKeyCode = (codePoint - '1') + KeyEvent.KEYCODE_F1;
-                    break;
-                case '0':
-                    resultingKeyCode = KeyEvent.KEYCODE_F10;
-                    break;
+            // Function keys.
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                resultingKeyCode = (codePoint - '1') + KeyEvent.KEYCODE_F1;
+                break;
+            case '0':
+                resultingKeyCode = KeyEvent.KEYCODE_F10;
+                break;
 
-                // Other special keys.
-                case 'e':
-                    resultingCodePoint = /*Escape*/ 27;
-                    break;
-                case '.':
-                    resultingCodePoint = /*^.*/ 28;
-                    break;
+            // Other special keys.
+            case 'e':
+                resultingCodePoint = /*Escape*/ 27;
+                break;
+            case '.':
+                resultingCodePoint = /*^.*/ 28;
+                break;
 
-                case 'b': // alt+b, jumping backward in readline.
-                case 'f': // alf+f, jumping forward in readline.
-                case 'x': // alt+x, common in emacs.
-                    resultingCodePoint = lowerCase;
-                    altDown = true;
-                    break;
+            case 'b': // alt+b, jumping backward in readline.
+            case 'f': // alf+f, jumping forward in readline.
+            case 'x': // alt+x, common in emacs.
+                resultingCodePoint = lowerCase;
+                altDown = true;
+                break;
 
-                // Volume control.
-                case 'v':
-                    resultingCodePoint = -1;
-                    AudioManager audio = (AudioManager) mActivity.getSystemService(Context.AUDIO_SERVICE);
-                    audio.adjustSuggestedStreamVolume(AudioManager.ADJUST_SAME, AudioManager.USE_DEFAULT_STREAM_TYPE, AudioManager.FLAG_SHOW_UI);
-                    break;
+            // Volume control.
+            case 'v':
+                resultingCodePoint = -1;
+                AudioManager audio = (AudioManager) mActivity.getSystemService(Context.AUDIO_SERVICE);
+                audio.adjustSuggestedStreamVolume(AudioManager.ADJUST_SAME, AudioManager.USE_DEFAULT_STREAM_TYPE, AudioManager.FLAG_SHOW_UI);
+                break;
 
-                // Writing mode:
-                case 'q':
-                case 'k':
-                    mActivity.toggleShowExtraKeys();
-                    break;
+            // Writing mode:
+            case 'q':
+            case 'k':
+                mActivity.toggleShowExtraKeys();
+                break;
             }
 
             if (resultingKeyCode != -1) {
@@ -235,18 +235,18 @@ public final class TermuxViewClient implements TerminalViewClient {
                     TermuxPreferences.KeyboardShortcut shortcut = shortcuts.get(i);
                     if (codePointLowerCase == shortcut.codePoint) {
                         switch (shortcut.shortcutAction) {
-                            case TermuxPreferences.SHORTCUT_ACTION_CREATE_SESSION:
-                                mActivity.addNewSession(false, null);
-                                return true;
-                            case TermuxPreferences.SHORTCUT_ACTION_PREVIOUS_SESSION:
-                                mActivity.switchToSession(false);
-                                return true;
-                            case TermuxPreferences.SHORTCUT_ACTION_NEXT_SESSION:
-                                mActivity.switchToSession(true);
-                                return true;
-                            case TermuxPreferences.SHORTCUT_ACTION_RENAME_SESSION:
-                                mActivity.renameSession(mActivity.getCurrentTermSession());
-                                return true;
+                        case TermuxPreferences.SHORTCUT_ACTION_CREATE_SESSION:
+                            mActivity.addNewSession(false, null);
+                            return true;
+                        case TermuxPreferences.SHORTCUT_ACTION_PREVIOUS_SESSION:
+                            mActivity.switchToSession(false);
+                            return true;
+                        case TermuxPreferences.SHORTCUT_ACTION_NEXT_SESSION:
+                            mActivity.switchToSession(true);
+                            return true;
+                        case TermuxPreferences.SHORTCUT_ACTION_RENAME_SESSION:
+                            mActivity.renameSession(mActivity.getCurrentTermSession());
+                            return true;
                         }
                     }
                 }

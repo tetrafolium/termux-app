@@ -89,7 +89,7 @@ public class TermuxFileReceiverActivity extends Activity {
         try {
             String attachmentFileName = null;
 
-            String[] projection = new String[]{OpenableColumns.DISPLAY_NAME};
+            String[] projection = new String[] {OpenableColumns.DISPLAY_NAME};
             try (Cursor c = getContentResolver().query(uri, projection, null, null, null)) {
                 if (c != null && c.moveToFirst()) {
                     final int fileNameColumnId = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -115,7 +115,7 @@ public class TermuxFileReceiverActivity extends Activity {
             final File editorProgramFile = new File(EDITOR_PROGRAM);
             if (!editorProgramFile.isFile()) {
                 showErrorDialogAndQuit("The following file does not exist:\n$HOME/bin/termux-file-editor\n\n"
-                    + "Create this file as a script or a symlink - it will be called with the received file as only argument.");
+                                       + "Create this file as a script or a symlink - it will be called with the received file as only argument.");
                 return;
             }
 
@@ -131,18 +131,18 @@ public class TermuxFileReceiverActivity extends Activity {
             startService(executeIntent);
             finish();
         },
-            R.string.file_received_open_folder_button, text -> {
-                if (saveStreamWithName(in, text) == null) return;
+        R.string.file_received_open_folder_button, text -> {
+            if (saveStreamWithName(in, text) == null) return;
 
-                Intent executeIntent = new Intent(TermuxService.ACTION_EXECUTE);
-                executeIntent.putExtra(TermuxService.EXTRA_CURRENT_WORKING_DIRECTORY, TERMUX_RECEIVEDIR);
-                executeIntent.setClass(TermuxFileReceiverActivity.this, TermuxService.class);
-                startService(executeIntent);
-                finish();
-            },
-            android.R.string.cancel, text -> finish(), dialog -> {
-                if (mFinishOnDismissNameDialog) finish();
-            });
+            Intent executeIntent = new Intent(TermuxService.ACTION_EXECUTE);
+            executeIntent.putExtra(TermuxService.EXTRA_CURRENT_WORKING_DIRECTORY, TERMUX_RECEIVEDIR);
+            executeIntent.setClass(TermuxFileReceiverActivity.this, TermuxService.class);
+            startService(executeIntent);
+            finish();
+        },
+        android.R.string.cancel, text -> finish(), dialog -> {
+            if (mFinishOnDismissNameDialog) finish();
+        });
     }
 
     public File saveStreamWithName(InputStream in, String attachmentFileName) {
@@ -172,7 +172,7 @@ public class TermuxFileReceiverActivity extends Activity {
         final File urlOpenerProgramFile = new File(URL_OPENER_PROGRAM);
         if (!urlOpenerProgramFile.isFile()) {
             showErrorDialogAndQuit("The following file does not exist:\n$HOME/bin/termux-url-opener\n\n"
-                + "Create this file as a script or a symlink - it will be called with the shared URL as only argument.");
+                                   + "Create this file as a script or a symlink - it will be called with the shared URL as only argument.");
             return;
         }
 
@@ -184,7 +184,7 @@ public class TermuxFileReceiverActivity extends Activity {
 
         Intent executeIntent = new Intent(TermuxService.ACTION_EXECUTE, urlOpenerProgramUri);
         executeIntent.setClass(TermuxFileReceiverActivity.this, TermuxService.class);
-        executeIntent.putExtra(TermuxService.EXTRA_ARGUMENTS, new String[]{url});
+        executeIntent.putExtra(TermuxService.EXTRA_ARGUMENTS, new String[] {url});
         startService(executeIntent);
         finish();
     }

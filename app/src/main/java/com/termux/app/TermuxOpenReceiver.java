@@ -37,13 +37,13 @@ public class TermuxOpenReceiver extends BroadcastReceiver {
         final boolean useChooser = intent.getBooleanExtra("chooser", false);
         final String intentAction = intent.getAction() == null ? Intent.ACTION_VIEW : intent.getAction();
         switch (intentAction) {
-            case Intent.ACTION_SEND:
-            case Intent.ACTION_VIEW:
-                // Ok.
-                break;
-            default:
-                Log.e(EmulatorDebug.LOG_TAG, "Invalid action '" + intentAction + "', using 'view'");
-                break;
+        case Intent.ACTION_SEND:
+        case Intent.ACTION_VIEW:
+            // Ok.
+            break;
+        default:
+            Log.e(EmulatorDebug.LOG_TAG, "Invalid action '" + intentAction + "', using 'view'");
+            break;
         }
 
         final boolean isExternalUrl = data.getScheme() != null && !data.getScheme().equals("file");
@@ -119,7 +119,7 @@ public class TermuxOpenReceiver extends BroadcastReceiver {
             File file = new File(uri.getPath());
 
             if (projection == null) {
-                projection = new String[]{
+                projection = new String[] {
                     MediaStore.MediaColumns.DISPLAY_NAME,
                     MediaStore.MediaColumns.SIZE,
                     MediaStore.MediaColumns._ID
@@ -131,17 +131,17 @@ public class TermuxOpenReceiver extends BroadcastReceiver {
                 String column = projection[i];
                 Object value;
                 switch (column) {
-                    case MediaStore.MediaColumns.DISPLAY_NAME:
-                        value = file.getName();
-                        break;
-                    case MediaStore.MediaColumns.SIZE:
-                        value = (int) file.length();
-                        break;
-                    case MediaStore.MediaColumns._ID:
-                        value = 1;
-                        break;
-                    default:
-                        value = null;
+                case MediaStore.MediaColumns.DISPLAY_NAME:
+                    value = file.getName();
+                    break;
+                case MediaStore.MediaColumns.SIZE:
+                    value = (int) file.length();
+                    break;
+                case MediaStore.MediaColumns._ID:
+                    value = 1;
+                    break;
+                default:
+                    value = null;
                 }
                 row[i] = value;
             }

@@ -196,7 +196,7 @@ public final class TerminalSession extends TerminalOutput {
                     // Ignore, just shutting down.
                 }
             }
-        }.start();
+        } .start();
 
         new Thread("TermSessionOutputWriter[pid=" + mShellPid + "]") {
             @Override
@@ -212,7 +212,7 @@ public final class TerminalSession extends TerminalOutput {
                     // Ignore.
                 }
             }
-        }.start();
+        } .start();
 
         new Thread("TermSessionWaiter[pid=" + mShellPid + "]") {
             @Override
@@ -220,7 +220,7 @@ public final class TerminalSession extends TerminalOutput {
                 int processExitCode = JNI.waitFor(mShellPid);
                 mMainThreadHandler.sendMessage(mMainThreadHandler.obtainMessage(MSG_PROCESS_EXITED, processExitCode));
             }
-        }.start();
+        } .start();
 
     }
 
@@ -245,23 +245,23 @@ public final class TerminalSession extends TerminalOutput {
         } else if (codePoint <= /* 11 bits */0b11111111111) {
             /* 110xxxxx leading byte with leading 5 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11000000 | (codePoint >> 6));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         } else if (codePoint <= /* 16 bits */0b1111111111111111) {
-                        /* 1110xxxx leading byte with leading 4 bits */
+            /* 1110xxxx leading byte with leading 4 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11100000 | (codePoint >> 12));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 6) & 0b111111));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         } else { /* We have checked codePoint <= 1114111 above, so we have max 21 bits = 0b111111111111111111111 */
-                        /* 11110xxx leading byte with leading 3 bits */
+            /* 11110xxx leading byte with leading 3 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b11110000 | (codePoint >> 18));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 12) & 0b111111));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | ((codePoint >> 6) & 0b111111));
-                        /* 10xxxxxx continuation byte with following 6 bits */
+            /* 10xxxxxx continuation byte with following 6 bits */
             mUtf8InputBuffer[bufferPosition++] = (byte) (0b10000000 | (codePoint & 0b111111));
         }
         write(mUtf8InputBuffer, 0, bufferPosition);

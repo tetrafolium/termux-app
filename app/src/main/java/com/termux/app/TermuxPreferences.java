@@ -101,7 +101,7 @@ final class TermuxPreferences {
         } catch (NumberFormatException | ClassCastException e) {
             mFontSize = defaultFontSize;
         }
-        mFontSize = clamp(mFontSize, MIN_FONTSIZE, MAX_FONTSIZE); 
+        mFontSize = clamp(mFontSize, MIN_FONTSIZE, MAX_FONTSIZE);
     }
 
     boolean toggleShowExtraKeys(Context context) {
@@ -143,7 +143,7 @@ final class TermuxPreferences {
         }
         return null;
     }
-    
+
     void reloadFromProperties(Context context) {
         File propsFile = new File(TermuxService.HOME_PATH + "/.termux/termux.properties");
         if (!propsFile.exists())
@@ -162,15 +162,15 @@ final class TermuxPreferences {
         }
 
         switch (props.getProperty("bell-character", "vibrate")) {
-            case "beep":
-                mBellBehaviour = BELL_BEEP;
-                break;
-            case "ignore":
-                mBellBehaviour = BELL_IGNORE;
-                break;
-            default: // "vibrate".
-                mBellBehaviour = BELL_VIBRATE;
-                break;
+        case "beep":
+            mBellBehaviour = BELL_BEEP;
+            break;
+        case "ignore":
+            mBellBehaviour = BELL_IGNORE;
+            break;
+        default: // "vibrate".
+            mBellBehaviour = BELL_VIBRATE;
+            break;
         }
 
         try {

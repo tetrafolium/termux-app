@@ -313,21 +313,21 @@ public final class TerminalView extends View {
                         // E.g. penti keyboard for ctrl input.
                         ctrlHeld = true;
                         switch (codePoint) {
-                            case 31:
-                                codePoint = '_';
-                                break;
-                            case 30:
-                                codePoint = '^';
-                                break;
-                            case 29:
-                                codePoint = ']';
-                                break;
-                            case 28:
-                                codePoint = '\\';
-                                break;
-                            default:
-                                codePoint += 96;
-                                break;
+                        case 31:
+                            codePoint = '_';
+                            break;
+                        case 30:
+                            codePoint = '^';
+                            break;
+                        case 29:
+                            codePoint = ']';
+                            break;
+                        case 28:
+                            codePoint = '\\';
+                            break;
+                        default:
+                            codePoint += 96;
+                            break;
                         }
                     }
 
@@ -477,51 +477,51 @@ public final class TerminalView extends View {
             int cx = (int) (ev.getX() / mRenderer.mFontWidth);
 
             switch (action) {
-                case MotionEvent.ACTION_UP:
-                    mInitialTextSelection = false;
-                    break;
-                case MotionEvent.ACTION_DOWN:
-                    int distanceFromSel1 = Math.abs(cx - mSelX1) + Math.abs(cy - mSelY1);
-                    int distanceFromSel2 = Math.abs(cx - mSelX2) + Math.abs(cy - mSelY2);
-                    mIsDraggingLeftSelection = distanceFromSel1 <= distanceFromSel2;
-                    mSelectionDownX = ev.getX();
-                    mSelectionDownY = ev.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if (mInitialTextSelection) break;
-                    float deltaX = ev.getX() - mSelectionDownX;
-                    float deltaY = ev.getY() - mSelectionDownY;
-                    int deltaCols = (int) Math.ceil(deltaX / mRenderer.mFontWidth);
-                    int deltaRows = (int) Math.ceil(deltaY / mRenderer.mFontLineSpacing);
-                    mSelectionDownX += deltaCols * mRenderer.mFontWidth;
-                    mSelectionDownY += deltaRows * mRenderer.mFontLineSpacing;
-                    if (mIsDraggingLeftSelection) {
-                        mSelX1 += deltaCols;
-                        mSelY1 += deltaRows;
-                    } else {
-                        mSelX2 += deltaCols;
-                        mSelY2 += deltaRows;
-                    }
+            case MotionEvent.ACTION_UP:
+                mInitialTextSelection = false;
+                break;
+            case MotionEvent.ACTION_DOWN:
+                int distanceFromSel1 = Math.abs(cx - mSelX1) + Math.abs(cy - mSelY1);
+                int distanceFromSel2 = Math.abs(cx - mSelX2) + Math.abs(cy - mSelY2);
+                mIsDraggingLeftSelection = distanceFromSel1 <= distanceFromSel2;
+                mSelectionDownX = ev.getX();
+                mSelectionDownY = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mInitialTextSelection) break;
+                float deltaX = ev.getX() - mSelectionDownX;
+                float deltaY = ev.getY() - mSelectionDownY;
+                int deltaCols = (int) Math.ceil(deltaX / mRenderer.mFontWidth);
+                int deltaRows = (int) Math.ceil(deltaY / mRenderer.mFontLineSpacing);
+                mSelectionDownX += deltaCols * mRenderer.mFontWidth;
+                mSelectionDownY += deltaRows * mRenderer.mFontLineSpacing;
+                if (mIsDraggingLeftSelection) {
+                    mSelX1 += deltaCols;
+                    mSelY1 += deltaRows;
+                } else {
+                    mSelX2 += deltaCols;
+                    mSelY2 += deltaRows;
+                }
 
-                    mSelX1 = Math.min(mEmulator.mColumns, Math.max(0, mSelX1));
-                    mSelX2 = Math.min(mEmulator.mColumns, Math.max(0, mSelX2));
+                mSelX1 = Math.min(mEmulator.mColumns, Math.max(0, mSelX1));
+                mSelX2 = Math.min(mEmulator.mColumns, Math.max(0, mSelX2));
 
-                    if (mSelY1 == mSelY2 && mSelX1 > mSelX2 || mSelY1 > mSelY2) {
-                        // Switch handles.
-                        mIsDraggingLeftSelection = !mIsDraggingLeftSelection;
-                        int tmpX1 = mSelX1, tmpY1 = mSelY1;
-                        mSelX1 = mSelX2;
-                        mSelY1 = mSelY2;
-                        mSelX2 = tmpX1;
-                        mSelY2 = tmpY1;
-                    }
+                if (mSelY1 == mSelY2 && mSelX1 > mSelX2 || mSelY1 > mSelY2) {
+                    // Switch handles.
+                    mIsDraggingLeftSelection = !mIsDraggingLeftSelection;
+                    int tmpX1 = mSelX1, tmpY1 = mSelY1;
+                    mSelX1 = mSelX2;
+                    mSelY1 = mSelY2;
+                    mSelX2 = tmpX1;
+                    mSelY2 = tmpY1;
+                }
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        mActionMode.invalidateContentRect();
-                    invalidate();
-                    break;
-                default:
-                    break;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    mActionMode.invalidateContentRect();
+                invalidate();
+                break;
+            default:
+                break;
             }
             mGestureRecognizer.onTouchEvent(ev);
             return true;
@@ -538,13 +538,13 @@ public final class TerminalView extends View {
                 }
             } else if (mEmulator.isMouseTrackingActive()) { // BUTTON_PRIMARY.
                 switch (ev.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_UP:
-                        sendMouseEventCode(ev, TerminalEmulator.MOUSE_LEFT_BUTTON, ev.getAction() == MotionEvent.ACTION_DOWN);
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        sendMouseEventCode(ev, TerminalEmulator.MOUSE_LEFT_BUTTON_MOVED, true);
-                        break;
+                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_UP:
+                    sendMouseEventCode(ev, TerminalEmulator.MOUSE_LEFT_BUTTON, ev.getAction() == MotionEvent.ACTION_DOWN);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    sendMouseEventCode(ev, TerminalEmulator.MOUSE_LEFT_BUTTON_MOVED, true);
+                    break;
                 }
                 return true;
             }
@@ -565,10 +565,10 @@ public final class TerminalView extends View {
             } else if (mClient.shouldBackButtonBeMappedToEscape()) {
                 // Intercept back button to treat it as escape:
                 switch (event.getAction()) {
-                    case KeyEvent.ACTION_DOWN:
-                        return onKeyDown(keyCode, event);
-                    case KeyEvent.ACTION_UP:
-                        return onKeyUp(keyCode, event);
+                case KeyEvent.ACTION_DOWN:
+                    return onKeyDown(keyCode, event);
+                case KeyEvent.ACTION_UP:
+                    return onKeyUp(keyCode, event);
                 }
             }
         }
@@ -645,7 +645,7 @@ public final class TerminalView extends View {
     void inputCodePoint(int codePoint, boolean controlDownFromEvent, boolean leftAltDownFromEvent) {
         if (LOG_KEY_EVENTS) {
             Log.i(EmulatorDebug.LOG_TAG, "inputCodePoint(codePoint=" + codePoint + ", controlDownFromEvent=" + controlDownFromEvent + ", leftAltDownFromEvent="
-                + leftAltDownFromEvent + ")");
+                  + leftAltDownFromEvent + ")");
         }
 
         if (mTermSession == null) return;
@@ -684,15 +684,15 @@ public final class TerminalView extends View {
             // of the more normal ones from ASCII that terminal programs expect - the
             // desire to input the original characters should be low.
             switch (codePoint) {
-                case 0x02DC: // SMALL TILDE.
-                    codePoint = 0x007E; // TILDE (~).
-                    break;
-                case 0x02CB: // MODIFIER LETTER GRAVE ACCENT.
-                    codePoint = 0x0060; // GRAVE ACCENT (`).
-                    break;
-                case 0x02C6: // MODIFIER LETTER CIRCUMFLEX ACCENT.
-                    codePoint = 0x005E; // CIRCUMFLEX ACCENT (^).
-                    break;
+            case 0x02DC: // SMALL TILDE.
+                codePoint = 0x007E; // TILDE (~).
+                break;
+            case 0x02CB: // MODIFIER LETTER GRAVE ACCENT.
+                codePoint = 0x0060; // GRAVE ACCENT (`).
+                break;
+            case 0x02C6: // MODIFIER LETTER CIRCUMFLEX ACCENT.
+                codePoint = 0x005E; // CIRCUMFLEX ACCENT (^).
+                break;
             }
 
             // If left alt, send escape before the code point to make e.g. Alt+B and Alt+F work in readline:
@@ -847,21 +847,21 @@ public final class TerminalView extends View {
                         return true;
                     }
                     switch (item.getItemId()) {
-                        case 1:
-                            String selectedText = mEmulator.getSelectedText(mSelX1, mSelY1, mSelX2, mSelY2).trim();
-                            mTermSession.clipboardText(selectedText);
-                            break;
-                        case 2:
-                            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clipData = clipboard.getPrimaryClip();
-                            if (clipData != null) {
-                                CharSequence paste = clipData.getItemAt(0).coerceToText(getContext());
-                                if (!TextUtils.isEmpty(paste)) mEmulator.paste(paste.toString());
-                            }
-                            break;
-                        case 3:
-                            showContextMenu();
-                            break;
+                    case 1:
+                        String selectedText = mEmulator.getSelectedText(mSelX1, mSelY1, mSelX2, mSelY2).trim();
+                        mTermSession.clipboardText(selectedText);
+                        break;
+                    case 2:
+                        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clipData = clipboard.getPrimaryClip();
+                        if (clipData != null) {
+                            CharSequence paste = clipData.getItemAt(0).coerceToText(getContext());
+                            if (!TextUtils.isEmpty(paste)) mEmulator.paste(paste.toString());
+                        }
+                        break;
+                    case 3:
+                        showContextMenu();
+                        break;
                     }
                     toggleSelectingText(null);
                     return true;

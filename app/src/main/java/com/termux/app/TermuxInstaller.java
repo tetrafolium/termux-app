@@ -57,7 +57,7 @@ final class TermuxInstaller {
         boolean isPrimaryUser = um.getSerialNumberForUser(android.os.Process.myUserHandle()) == 0;
         if (!isPrimaryUser) {
             new AlertDialog.Builder(activity).setTitle(R.string.bootstrap_error_title).setMessage(R.string.bootstrap_error_not_primary_user_message)
-                .setOnDismissListener(dialog -> System.exit(0)).setPositiveButton(android.R.string.ok, null).show();
+            .setOnDismissListener(dialog -> System.exit(0)).setPositiveButton(android.R.string.ok, null).show();
             return;
         }
 
@@ -137,13 +137,13 @@ final class TermuxInstaller {
                     activity.runOnUiThread(() -> {
                         try {
                             new AlertDialog.Builder(activity).setTitle(R.string.bootstrap_error_title).setMessage(R.string.bootstrap_error_body)
-                                .setNegativeButton(R.string.bootstrap_error_abort, (dialog, which) -> {
-                                    dialog.dismiss();
-                                    activity.finish();
-                                }).setPositiveButton(R.string.bootstrap_error_try_again, (dialog, which) -> {
-                                    dialog.dismiss();
-                                    TermuxInstaller.setupIfNeeded(activity, whenDone);
-                                }).show();
+                            .setNegativeButton(R.string.bootstrap_error_abort, (dialog, which) -> {
+                                dialog.dismiss();
+                                activity.finish();
+                            }).setPositiveButton(R.string.bootstrap_error_try_again, (dialog, which) -> {
+                                dialog.dismiss();
+                                TermuxInstaller.setupIfNeeded(activity, whenDone);
+                            }).show();
                         } catch (WindowManager.BadTokenException e1) {
                             // Activity already dismissed - ignore.
                         }
@@ -158,7 +158,7 @@ final class TermuxInstaller {
                     });
                 }
             }
-        }.start();
+        } .start();
     }
 
     private static void ensureDirectoryExists(File directory) {
@@ -171,8 +171,8 @@ final class TermuxInstaller {
     private static URL determineZipUrl() throws MalformedURLException {
         String archName = determineTermuxArchName();
         String url = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-            ? "https://termux.org/bootstrap-" + archName + ".zip"
-            : "https://termux.net/bootstrap/bootstrap-" + archName + ".zip";
+                     ? "https://termux.org/bootstrap-" + archName + ".zip"
+                     : "https://termux.net/bootstrap/bootstrap-" + archName + ".zip";
         return new URL(url);
     }
 
@@ -186,14 +186,18 @@ final class TermuxInstaller {
         // emulation is available.
         for (String androidArch : Build.SUPPORTED_ABIS) {
             switch (androidArch) {
-                case "arm64-v8a": return "aarch64";
-                case "armeabi-v7a": return "arm";
-                case "x86_64": return "x86_64";
-                case "x86": return "i686";
+            case "arm64-v8a":
+                return "aarch64";
+            case "armeabi-v7a":
+                return "arm";
+            case "x86_64":
+                return "x86_64";
+            case "x86":
+                return "i686";
             }
         }
         throw new RuntimeException("Unable to determine arch from Build.SUPPORTED_ABIS =  "
-            + Arrays.toString(Build.SUPPORTED_ABIS));
+                                   + Arrays.toString(Build.SUPPORTED_ABIS));
     }
 
     /** Delete a folder and all its content or throw. Don't follow symlinks. */
@@ -265,7 +269,7 @@ final class TermuxInstaller {
                     Log.e(LOG_TAG, "Error setting up link", e);
                 }
             }
-        }.start();
+        } .start();
     }
 
 }

@@ -1,3 +1,56 @@
 inspecode:
-  checkstyle: auto-fix
-  pmd: auto-fix
+
+  astyle:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  checkstyle:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  clang-format:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  cpd:
+    thresholds: { num-issues: 999 }
+
+  #### not supported yet ??
+  #fortify:
+  #  thresholds: { num-issues: 999 }
+
+  fossology:
+    thresholds: { num-issues: 999 }
+
+  grep:
+    thresholds: { num-issues: 999 }
+
+  infer:
+    thresholds: { num-issues: 999 }
+
+  jscpd:
+    thresholds: { num-issues: 999 }
+
+  misspell:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  pmd:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  spotbugs:
+    options:
+      -targets: app
+    thresholds: { num-issues: 999 }
+
+  uncrustify:
+    auto-fix: true
+    thresholds: { num-issues: 999 }
+
+  #### not supported yet ??
+  #understand:
+  #  thresholds: { num-issues: 999 }
+
+  unused:
+    thresholds: { num-issues: 999 }
